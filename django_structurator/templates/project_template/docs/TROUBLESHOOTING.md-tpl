@@ -1,0 +1,7 @@
+# Troubleshooting
+
+## Error: ModuleNotFoundError: No module named 'django'
+- Solution: Install Django with `pip install django`.
+
+## Error: Environment variables not loaded
+- Solution: Ensure the `.env` file is configured and use `django-environ`.

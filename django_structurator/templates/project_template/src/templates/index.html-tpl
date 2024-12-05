@@ -1,0 +1,13 @@
+{% raw %}{% extends 'base.html' %}{% endraw %}
+
+{% raw %}{% block head %}{% endraw %}
+<!-- This heading is from index.html  -->
+{% raw %}{% endblock %}{% endraw %}
+
+{% raw %}{% block content %}{% endraw %}
+<h1>This is index page of {{project_name}}</h1>
+{% raw %}{% endblock %}{% endraw %}
+
+{% raw %}{% block script %}{% endraw %}
+<!-- This Script is from index.html  -->
+{% raw %}{% endblock %}{% endraw %}

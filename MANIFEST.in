@@ -1,0 +1,3 @@
+# Include all hidden template files
+recursive-include django_structurator/templates *
+recursive-include django_structurator/templates .*

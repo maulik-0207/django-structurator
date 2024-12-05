@@ -1,0 +1,9 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def example_view(request):
+    
+    context = {
+        "example_key": "example_value",
+    }
+    return render(request, "{{ app_name }}/example_template.html", context)

@@ -1,0 +1,12 @@
+# Common requirements that project needs in every environment 
+
+Django=={{django_docs_version}}
+django-environ
+{% if use_password_hashers %}argon2-cffi
+bcrypt{% endif %}
+{% if use_drf %}djangorestframework{% endif %}
+{% if use_redis %}redis
+django-redis{% endif %}
+{% if use_celery %}celery
+django-celery-results{% endif %}
+{% if database == 'postgresql' %}psycopg2{% elif database == 'mysql' %}mysqlclient{% endif %}

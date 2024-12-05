@@ -1,0 +1,44 @@
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+from django.utils.html import strip_tags
+
+
+def send_email(
+        subject: str,
+        ctx: dict[str,any], 
+        template_path: str, 
+        recipient_list: list[str], 
+        attachment_list: list[dict] = None
+    ):
+
+    attachment_list = attachment_list or []
+    
+    try:
+        email_from = settings.EMAIL_HOST_USER
+        html_message = render_to_string(template_name=template_path, context=ctx)
+        plain_message = strip_tags(html_message)
+        
+        message = EmailMultiAlternatives(
+            subject=subject,
+            body=plain_message,
+            from_email=email_from,
+            to=recipient_list,
+        )
+        message.attach_alternative(html_message, 'text/html')
+
+        # Attach any files if provided
+        for attachment in attachment_list:
+            message.attach(
+                filename=attachment.get("filename", "error.txt"),
+                content=attachment.get("content", "could not load attachment"),
+                mimetype=attachment.get("mimetype", "text/plain")
+            )
+
+        # Send the email and return the result
+        result = message.send()
+        return result  # Returns the number of successfully sent emails
+    except Exception as e:
+        # Log or handle the error as appropriate
+        print(f"Error sending email: {e}")
+        return False

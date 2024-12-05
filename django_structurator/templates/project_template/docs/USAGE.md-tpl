@@ -1,0 +1,5 @@
+# Usage Guide
+
+## Running the Development Server
+```bash
+python manage.py runserver

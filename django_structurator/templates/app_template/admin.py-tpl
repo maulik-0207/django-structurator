@@ -1,0 +1,82 @@
+from django.contrib import admin
+from .models import *
+# Register your models here
+
+# Example: Simple model registration
+# admin.site.register(MyModel)
+
+
+# @admin.register(ExampleModel)  # Replace with your model
+# class ExampleModelAdmin(admin.ModelAdmin):
+#     """
+#     Custom admin interface for the ExampleModel.
+# 
+#     Attributes:
+#         list_display: Fields displayed in the model list view.
+#         search_fields: Fields searchable in the model list view.
+#         list_filter: Fields for filtering in the model list view.
+#         ordering: Default ordering for the model list view.
+#         prepopulated_fields: Fields auto-filled based on another field.
+#         readonly_fields: Fields that are displayed but not editable.
+#         fieldsets: Custom grouping of fields in the form view.
+#         inlines: Inline admin configurations for related models.
+#     """
+#     # Fields displayed in the model list view
+#     list_display = ("field1", "field2", "created_at")
+# 
+#     # Fields searchable in the model list view
+#     search_fields = ("field1", "field3")
+# 
+#     # Filters available in the model list view
+#     list_filter = ("status", "created_at")
+# 
+#     # Default ordering for the model list view
+#     ordering = ("-created_at",)
+# 
+#     # Maximum number of records per page
+#     list_per_page = 20
+# 
+#     # Fields that auto-fill based on other fields (e.g., slug fields)
+#     prepopulated_fields = {"slug_field": ("title_field",)}
+# 
+#     # Fields that cannot be edited
+#     readonly_fields = ("created_at", "updated_at")
+# 
+#     # Fields grouped into sections in the form view
+#     fieldsets = (
+#         (
+#             None,
+#             {
+#                 "fields": ("field1", "field2"),
+#             },
+#         ),
+#         (
+#             'Advanced options',
+#             {
+#                 "classes": ("collapse",),  # Collapsible section
+#                 "fields": ("field3", "field4"),
+#             },
+#         ),
+#     )
+#     # Inline admin configurations for related models
+#     inlines = [
+#         # ExampleInlineAdmin,
+#     ]
+# 
+#     # Fields that can be edited directly in the list view
+#     list_editable = ("status",)
+
+
+# Example: Inline admin for a related model
+# class ExampleInlineAdmin(admin.TabularInline):  # or admin.StackedInline
+#     """
+#     Inline admin for the related ExampleModel.
+# 
+#     Attributes:
+#         model: The related model to display inline.
+#         extra: The number of empty forms to display by default.
+#         fields: Fields displayed in the inline form.
+#     """
+#     model = RelatedModel  # Replace with your related model
+#     extra = 1
+#     fields = ("field1", "field2")

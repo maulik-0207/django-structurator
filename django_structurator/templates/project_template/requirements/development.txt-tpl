@@ -1,0 +1,6 @@
+# requirements that project needs in development environment
+
+-r base.txt
+
+{% if use_debug_toolbar %}django-debug-toolbar{% endif %}
+django_structurator=={{django_structurator_version}}

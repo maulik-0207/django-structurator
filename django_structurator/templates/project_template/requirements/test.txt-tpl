@@ -1,0 +1,3 @@
+# requirements that project needs in testing
+
+-r base.txt

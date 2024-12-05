@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% raw %}{% load static %}{% endraw %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% raw %}{% if title %}{{title}}{% else %}{% endraw %}{{project_name|title}}{% raw %}{% endif %}{% endraw %}</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/ico" href="{% raw %}{% static 'images/favicon.ico' %}{% endraw %}" type="image/x-icon">
+
+    {% raw %}{% block head %}{% endblock %}{% endraw %}
+</head>
+<body>
+    
+    {% raw %}
+    {% block content %}
+    {% endblock %}
+    {% endraw %}
+
+    {% raw %}{% block script %}{% endblock %}{% endraw %}
+</body>
+</html>
