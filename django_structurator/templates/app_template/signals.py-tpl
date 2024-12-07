@@ -1,3 +1,48 @@
+"""
+---> Model Signals <---
+
+    pre_save = Signal triggered before a model instance is saved to Database.
+    post_save = Signal triggered after a model instance is saved to Database.
+    pre_delete = Signal triggered before a model instance is deleted from Database.
+    post_delete = Signal triggered after a model instance is deleted from Database.
+    
+    Args:
+        sender (Model): The model class.
+        instance (Model instance): The instance being saved.
+        created (in post_save only)(bool): True if a new instance was created, False if updated.
+        kwargs: Additional keyword arguments.
+    
+@receiver(pre_save, sender = MyModel) #or pre_delete, post_delete 
+def pre_save_handler(sender, instance, **kwargs):
+    pass
+
+
+@receiver(post_save, sender = MyModel)
+def post_save_handler(sender, instance, created, **kwargs):
+    pass
+    
+---> Authentication Signals <---
+
+    user_logged_in = Signal triggered when a user logs in.
+    user_logged_out = Signal triggered when a user logs out.
+    user_login_failed = Signal triggered when a user login attempt fails.
+    
+    Args:
+        sender: The User model class.
+        credentials (in user_login_failed only)(dict): The login credentials provided.
+        request (HttpRequest): The request object.
+        user (User): The user instance (may be None if session expired in logout signal).
+        kwargs: Additional keyword arguments.
+    
+@receiver(user_logged_in) #or @receiver(user_logged_out)
+def user_logged_in_handler(sender, request, user, **kwargs):
+    pass
+
+
+@receiver(user_login_failed)
+def user_login_failed_handler(sender, credentials, request, **kwargs):
+    pass
+"""
 from django.db.models.signals import (
     pre_save,
     post_save,
@@ -5,103 +50,11 @@ from django.db.models.signals import (
     post_delete,
 )
 from django.dispatch import receiver
-from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
+# from django.contrib.auth.signals import (
+#     user_logged_in, 
+#     user_logged_out, 
+#     user_login_failed
+# )
 from .models import *
+# Create your Signals here.
 
-
-# Model Signals
-
-# @receiver(pre_save, sender = MyModel)
-# def pre_save_handler(sender, instance, **kwargs):
-#     """
-#     Signal triggered before a model instance is saved.
-# 
-#     Args:
-#         sender (Model): The model class.
-#         instance (Model instance): The instance being saved.
-#         kwargs: Additional keyword arguments.
-#     """
-#     pass
-
-
-# @receiver(post_save, sender = MyModel)
-# def post_save_handler(sender, instance, created, **kwargs):
-#     """
-#     Signal triggered after a model instance is saved.
-# 
-#     Args:
-#         sender (Model): The model class.
-#         instance (Model instance): The instance being saved.
-#         created (bool): True if a new instance was created, False if updated.
-#         kwargs: Additional keyword arguments.
-#     """
-#     pass
-
-
-# @receiver(pre_delete, sender = MyModel)
-# def pre_delete_handler(sender, instance, **kwargs):
-#     """
-#     Signal triggered before a model instance is deleted.
-# 
-#     Args:
-#         sender (Model): The model class.
-#         instance (Model instance): The instance being deleted.
-#         kwargs: Additional keyword arguments.
-#     """
-#     pass
-
-
-# @receiver(post_delete, sender = MyModel)
-# def post_delete_handler(sender, instance, **kwargs):
-#     """
-#     Signal triggered after a model instance is deleted.
-# 
-#     Args:
-#         sender (Model): The model class.
-#         instance (Model instance): The instance that was deleted.
-#         kwargs: Additional keyword arguments.
-#     """
-#     pass
-
-
-# Authentication Signals
-# @receiver(user_logged_in)
-# def user_logged_in_handler(sender, request, user, **kwargs):
-#     """
-#     Signal triggered when a user logs in.
-# 
-#     Args:
-#         sender: The User model class.
-#         request (HttpRequest): The request object.
-#         user (User): The user instance.
-#         kwargs: Additional keyword arguments.
-#     """
-#     pass
-
-
-# @receiver(user_logged_out)
-# def user_logged_out_handler(sender, request, user, **kwargs):
-#     """
-#     Signal triggered when a user logs out.
-# 
-#     Args:
-#         sender: The User model class.
-#         request (HttpRequest): The request object.
-#         user (User): The user instance (may be None if session expired).
-#         kwargs: Additional keyword arguments.
-#     """
-#     pass
-
-
-# @receiver(user_login_failed)
-# def user_login_failed_handler(sender, credentials, request, **kwargs):
-#     """
-#     Signal triggered when a user login attempt fails.
-# 
-#     Args:
-#         sender: The User model class.
-#         credentials (dict): The login credentials provided.
-#         request (HttpRequest): The request object.
-#         kwargs: Additional keyword arguments.
-#     """
-#     pass

@@ -1,34 +1,25 @@
+"""
+@shared_task 
+def add(x, y): # add.delay(10, 20)
+    return x + y
+
+@shared_task(bind=True, max_retries=3) 
+def fetch_data(self, url): # fetch_data.delay("http://example.com/api/data")
+    try:
+        response = requests.get(url)
+        return response.json()
+    except Exception as exc:
+        self.retry(exc=exc, countdown=2**self.request.retries)
+    
+
+Execution Methods:
+--> Using `delay`:
+        add.delay(10, 20)
+
+--> Using `apply_async`:
+        fetch_data.apply_async(eta= django.utils.timezone.now() + datetime.timedelta(seconds=30))
+        fetch_data.apply_async(countdown=10) # Executes after 10 seconds
+"""
 from celery import shared_task
+# Create your tasks here.
 
-# ============================================
-# Example Task Definitions
-# ============================================
-
-@shared_task
-def example_task():
-    """
-    A simple example task.
-
-    This task demonstrates the basic structure of a Celery task. 
-    Replace the logic inside with your custom implementation.
-    """
-    pass
-
-# ============================================
-# Best Practices
-# ============================================
-
-# 1. Always handle exceptions gracefully to avoid task failures disrupting workers.
-# 2. Use the `retry` feature for transient errors like network issues or external API timeouts.
-# 3. Log important events in tasks for better traceability and debugging.
-# 4. Avoid passing large objects (like entire querysets) to tasks. Use primary keys or lightweight representations.
-
-# ============================================
-# Additional Notes
-# ============================================
-
-# - To call a task: 
-#     example_task.delay()
-# - To pass arguments: 
-#     example_task.delay(param_value)
-# - To schedule periodic tasks, define them in Celery Beat or a similar scheduler.

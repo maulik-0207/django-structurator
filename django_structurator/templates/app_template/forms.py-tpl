@@ -1,72 +1,47 @@
+"""
+class ExampleModelForm(forms.ModelForm):
+    field3 = forms.CharField(
+        max_length= 100,
+        required= True,
+        label= "Full Name",
+        help_text= "Enter your full name.",
+        widget= forms.TextInput(attrs={"placeholder": "John Doe", "class": "form-control"}),
+    )
+    
+    class Meta:
+        model = ExampleModel
+        fields = ["field1", "field2", "field3"]
+        widgets = {
+            "field1": forms.TextInput(attrs={"class": "form-control"}),
+            "field2": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
+        }
+        help_texts = {
+            "field1": "Enter a value for field1.",
+        }
+        labels = {
+            "field1": "Custom Label for Field1",
+        }
+
+    def clean_field1(self):    
+        clean_field1 = self.cleaned_data.get("clean_field1")
+        if not clean_field1.endswith("@domain.com"):
+            raise forms.ValidationError("clean_field1 must be from domain.com")
+        return clean_field1
+    
+    def clean(self):
+        cleaned_data = super(ExampleModelForm, self).clean()
+        field1 = cleaned_data.get("field1")
+        field2 = cleaned_data.get("field2")
+
+        if field1 == field2:
+            self.add_error('field1',"field1 is not same as field2")
+        return cleaned_data
+    
+    def save(self):
+        # Override or write your own save method
+        pass
+"""
 from django import forms
 from .models import *  
+# Create your forms here.
 
-
-# class ExampleForm(forms.Form):
-#     field1 = forms.CharField(
-#         max_length= 100,
-#         required= True,
-#         label= "Full Name",
-#         help_text= "Enter your full name.",
-#         widget= forms.TextInput(attrs={"placeholder": "John Doe", "class": "form-control"}),
-#     )
-# 
-#     def clean_field1(self):
-#         """
-#         Custom validation for the field1 field to ensure it ends with 'domain.com'.
-#         """
-#         email = self.cleaned_data.get("email")
-#         if not email.endswith("@domain.com"):
-#             raise forms.ValidationError("Email must be from domain.com")
-#         return email
-# 
-#     def clean(self):
-#         """
-#         Custom form-wide validation to check for logical consistency between fields.
-#         """
-#         cleaned_data = super(ExampleForm, self).clean()
-#         age = cleaned_data.get("age")
-#         feedback = cleaned_data.get("feedback")
-# 
-#         if age and feedback and age < 25 and not feedback:
-#             self.add_error('field1',"Feedback is required for users under 25.")
-#         return cleaned_data
-# 
-# 
-# class ExampleModelForm(forms.ModelForm):
-#     """
-#     A model form for the ExampleModel.
-# 
-#     Automatically maps model fields to form fields and provides additional
-#     customization options.
-#     """
-# 
-#     class Meta:
-#         model = ExampleModel
-#         fields = ["field1", "field2", "field3"]  # Replace with actual model fields
-#         widgets = {
-#             "field1": forms.TextInput(attrs={"class": "form-control"}),
-#             "field2": forms.Select(attrs={"class": "form-select"}),
-#             "field3": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
-#         }
-#         help_texts = {
-#             "field1": "Enter a value for field1.",
-#             "field2": "Select an option for field2.",
-#         }
-#         labels = {
-#             "field1": "Custom Label for Field1",
-#             "field2": "Custom Label for Field2",
-#         }
-# 
-#     def clean(self):
-#         cleaned_data = super(ExampleForm, self).clean()
-#         age = cleaned_data.get("age")
-#         feedback = cleaned_data.get("feedback")
-# 
-#         if age and feedback and age < 25 and not feedback:
-#             self.add_error('field1',"Feedback is required for users under 25.")
-#         return cleaned_data
-#     
-#     def save(self):
-#         # Override or write your own save method
-#         pass
