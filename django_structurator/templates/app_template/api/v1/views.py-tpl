@@ -1,75 +1,40 @@
+"""
+-------------------------------
+Function-Based API Views (FBV)
+-------------------------------
+@api_view(['GET', 'POST'])
+def sample_api_view(request):
+    
+    if request.method == 'GET':
+        data = {"message": "This is a GET response"}
+        return Response(data, status=status.HTTP_200_OK)
+    
+    elif request.method == 'POST':
+        data = {"message": "This is a POST response"}
+        return Response(data, status=status.HTTP_201_CREATED)
+
+-------------------------------
+Class-Based API Views (CBV)
+-------------------------------
+class SampleAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        data = {"message": "This is a GET response from CBV"}
+        return Response(data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        data = {"message": "Resource created successfully from CBV"}
+        return Response(data, status=status.HTTP_201_CREATED)
+
+    def put(self, request, *args, **kwargs):
+        data = {"message": "Resource updated successfully"}
+        return Response(data, status=status.HTTP_200_OK)
+
+    def delete(self, request, *args, **kwargs):
+        data = {"message": "Resource deleted successfully"}
+        return Response(data, status=status.HTTP_204_NO_CONTENT)
+"""
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 
-"""
-This file contains both function-based views (FBV) and class-based views (CBV) for handling API logic.
-"""
-
-# ----------------------------
-# Function-Based API Views (FBV)
-# ----------------------------
-
-# Example: Function-based API view for listing or creating resources
-# @api_view(['GET', 'POST'])
-# def sample_api_view(request):
-#     """
-#     Handles GET and POST requests for a sample resource.
-# 
-#     GET: Retrieves a list of resources.
-#     POST: Creates a new resource.
-#     """
-#     if request.method == 'GET':
-#         data = {"message": "This is a GET response"}
-#         return Response(data, status=status.HTTP_200_OK)
-#     
-#     elif request.method == 'POST':
-#         data = {"message": "Resource created successfully"}
-#         return Response(data, status=status.HTTP_201_CREATED)
-
-
-# ----------------------------
-# Class-Based API Views (CBV)
-# ----------------------------
-
-# Example: Class-based API view
-# class SampleAPIView(APIView):
-#     """
-#     A class-based API view for handling all HTTP methods on a sample resource.
-#     """
-# 
-#     def get(self, request, *args, **kwargs):
-#         """
-#         Handles GET requests to retrieve resources.
-#         """
-#         data = {"message": "This is a GET response from CBV"}
-#         return Response(data, status=status.HTTP_200_OK)
-# 
-#     def post(self, request, *args, **kwargs):
-#         """
-#         Handles POST requests to create a new resource.
-#         """
-#         data = {"message": "Resource created successfully from CBV"}
-#         return Response(data, status=status.HTTP_201_CREATED)
-# 
-#     def put(self, request, *args, **kwargs):
-#         """
-#         Handles PUT requests to update an existing resource.
-#         """
-#         data = {"message": "Resource updated successfully"}
-#         return Response(data, status=status.HTTP_200_OK)
-# 
-#     def patch(self, request, *args, **kwargs):
-#         """
-#         Handles PATCH requests to partially update a resource.
-#         """
-#         data = {"message": "Resource partially updated"}
-#         return Response(data, status=status.HTTP_200_OK)
-# 
-#     def delete(self, request, *args, **kwargs):
-#         """
-#         Handles DELETE requests to delete a resource.
-#         """
-#         data = {"message": "Resource deleted successfully"}
-#         return Response(data, status=status.HTTP_204_NO_CONTENT)

@@ -1,41 +1,17 @@
+"""
+---> Simple Tag <---
+@register.simple_tag
+def current_year(): # Use -> {% raw %}{% current_year %}{% endraw %}
+    from datetime import datetime
+    return datetime.now().year
+
+
+---> Tag with Arguments <---
+@register.simple_tag
+def multiply(value1, value2): # Use -> {% raw %}{% multiply 5 10 %}{% endraw %}
+    return value1 * value2
+"""
 from django import template
 
 register = template.Library()
-
-# ============================================
-# Example Simple Tag
-# ============================================
-
-# @register.simple_tag
-# def current_year():
-#     """
-#     A simple tag to return the current year.
-# 
-#     Example Usage:
-#         {% raw %}{% current_year %}{% endraw %}
-#     """
-#     from datetime import datetime
-#     return datetime.now().year
-
-
-# ============================================
-# Example Simple Tag with Arguments
-# ============================================
-
-# @register.simple_tag
-# def multiply(value1, value2):
-#     """
-#     A tag that multiplies two values.
-# 
-#     Args:
-#         value1 (int or float): First value.
-#         value2 (int or float): Second value.
-# 
-#     Returns:
-#         int or float: The product of the two values.
-# 
-#     Example Usage:
-#         {% raw %}{% multiply 5 10 %}{% endraw %}
-#     """
-#     return value1 * value2
 

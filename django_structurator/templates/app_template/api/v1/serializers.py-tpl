@@ -1,16 +1,9 @@
+"""
+class MyModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ModelName
+        fields = '__all__'
+"""
 from rest_framework import serializers
+from .models import *
 
-"""
-Serializers handle the transformation of model instances into JSON format and vice versa.
-"""
-
-# Example: Serializer for a sample model
-# from app.models import MyModel
-# 
-# class MyModelSerializer(serializers.ModelSerializer):
-#     """
-#     Serializer for MyModel.
-#     """
-#     class Meta:
-#         model = MyModel
-#         fields = '__all__'

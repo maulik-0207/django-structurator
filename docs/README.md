@@ -63,4 +63,4 @@ Contributions are welcome! Please check our contribution guidelines.
 
 ## License
 
-This project is licensed under the [MIT License](./../LICENSE), a permissive open-source license that allows for commercial and non-commercial use, modification, and distribution.
+This project is licensed under the [MIT License](https://github.com/maulik-0207/django-structurator/blob/master/LICENSE), a permissive open-source license that allows for commercial and non-commercial use, modification, and distribution.

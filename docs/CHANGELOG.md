@@ -1,7 +1,5 @@
 # Changelog
 
-## [Unreleased]
-
 ### Added
 - Cross-platform support for project and app creation
 - Customizable project and app features
@@ -28,6 +26,7 @@
 - Basic error handling
 - Path validation mechanisms
 
-## Roadmap
-- Improved error reporting
-- Additional Django feature support
+## [0.1.1] - 2024-12-08
+
+### Changes
+- Improved quality of files' documentation

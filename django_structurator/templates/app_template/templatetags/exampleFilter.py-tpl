@@ -1,81 +1,20 @@
+"""
+---> Simple Filter <---
+@register.filter
+def to_uppercase(value): # Use -> {% raw %}{{ some_variable|to_uppercase }}{% endraw %}
+    if not isinstance(value, str):
+        return value
+    return value.upper()
+    
+
+---> Filter with Arguments <---
+@register.filter
+def truncate_chars(value, num_chars): # Use -> {% raw %}{{ some_variable|truncate_chars:10 }}{% endraw %}
+    if not isinstance(value, str) or not isinstance(num_chars, int):
+        return value
+    return value[:num_chars] + "..." if len(value) > num_chars else value
+"""
 from django import template
 
 register = template.Library()
 
-# ============================================
-# Example Simple Filter
-# ============================================
-
-# @register.filter
-# def to_uppercase(value):
-#     """
-#     Converts a string to uppercase.
-# 
-#     Args:
-#         value (str): The input string.
-# 
-#     Returns:
-#         str: The input string in uppercase.
-# 
-#     Example Usage:
-#         {% raw %}{{ some_variable|to_uppercase }}{% endraw %}
-#     """
-#     if not isinstance(value, str):
-#         return value
-#     return value.upper()
-
-
-# ============================================
-# Example Filter with Arguments
-# ============================================
-
-# @register.filter
-# def truncate_chars(value, num_chars):
-#     """
-#     Truncates a string to the specified number of characters.
-# 
-#     Args:
-#         value (str): The input string.
-#         num_chars (int): The maximum number of characters.
-# 
-#     Returns:
-#         str: The truncated string with '...' if truncated.
-# 
-#     Example Usage:
-#         {% raw %}{{ some_variable|truncate_chars:10 }}{% endraw %}
-#     """
-#     if not isinstance(value, str) or not isinstance(num_chars, int):
-#         return value
-#     return value[:num_chars] + "..." if len(value) > num_chars else value
-
-
-# ============================================
-# Example Boolean Filter
-# ============================================
-
-# @register.filter
-# def is_even(value):
-#     """
-#     Checks if a number is even.
-# 
-#     Args:
-#         value (int): The input number.
-# 
-#     Returns:
-#         bool: True if the number is even, False otherwise.
-# 
-#     Example Usage:
-#         {% raw %}{{ some_number|is_even }}{% endraw %}
-#     """
-#     if not isinstance(value, int):
-#         return False
-#     return value % 2 == 0
-
-
-# ============================================
-# Notes
-# ============================================
-
-# 1. Filters should be idempotent (not modify inputs permanently).
-# 2. Handle edge cases, such as invalid argument types.
-# 3. Avoid complex logic in filters; instead, use tags or views for heavy lifting.
