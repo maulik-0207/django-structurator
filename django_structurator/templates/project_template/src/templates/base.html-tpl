@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-{% raw %}{% load static %}{% endraw %}
+{% verbatim %}{% load static %}{% endverbatim %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% raw %}{% if title %}{{title}}{% else %}{% endraw %}{{project_name|title}}{% raw %}{% endif %}{% endraw %}</title>
+    <title>{% verbatim %}{% if title %}{{title}}{% else %}{% endverbatim %}{{project_name|title}}{% verbatim %}{% endif %}{% endverbatim %}</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/ico" href="{% raw %}{% static 'images/favicon.ico' %}{% endraw %}" type="image/x-icon">
+    <link rel="shortcut icon" type="image/ico" href="{% verbatim %}{% static 'images/favicon.ico' %}{% endverbatim %}" type="image/x-icon">
 
-    {% raw %}{% block head %}{% endblock %}{% endraw %}
+    {% verbatim %}{% block head %}{% endblock %}{% endverbatim %}
 </head>
 <body>
     
-    {% raw %}
+    {% verbatim %}
     {% block content %}
     {% endblock %}
-    {% endraw %}
+    {% endverbatim %}
 
-    {% raw %}{% block script %}{% endblock %}{% endraw %}
+    {% verbatim %}{% block script %}{% endblock %}{% endverbatim %}
 </body>
 </html>

@@ -11,28 +11,34 @@ https://docs.djangoproject.com/en/{{ django_docs_version }}/ref/settings/
 """
 
 from pathlib import Path
-import environ
 import os
+{% if env == 'django-environ' %}import environ{% elif env == 'python-dotenv' %}from dotenv import load_dotenv{% endif %}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-TEMPLATE_DIR = os.path.join(BASE_DIR.parent, 'templates')
-STATIC_DIR = os.path.join(BASE_DIR.parent, 'static')
+{% if use_project_level_template %}TEMPLATE_DIR = os.path.join(BASE_DIR.parent, 'templates'){% endif %}
+{% if use_project_level_static %}STATIC_DIR = os.path.join(BASE_DIR.parent, 'static'){% endif %}
 MEDIA_DIR = os.path.join(BASE_DIR.parent, 'media')
 
-env = environ.Env()
+{% if env == 'django-environ' %}env = environ.Env()
 environ.Env.read_env(env_file = os.path.join(BASE_DIR, '.env'))
+{% elif env == 'python-dotenv' %}
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+{% endif %}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/{{ django_docs_version }}/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.str('SECRET_KEY')
+SECRET_KEY = {% if env != 'no_env' %}{% if env != 'no_env' %}os.getenv("SECRET_KEY"){% else %}""{% endif %}{% else %}"{{secret_key}}"{% endif %}
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+]
 
 
 # Application definition
@@ -44,7 +50,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
 
     {% if use_celery %}'django_celery_results',{% endif %}
     {% if use_drf %}'rest_framework',{% endif %}
@@ -65,15 +70,15 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR],
+        'DIRS': [{% if use_project_level_template %}TEMPLATE_DIR{% endif %}],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # {% raw %}{{ MEDIA_URL }}{% endraw %}
-                'django.template.context_processors.media',
+                # {% verbatim %}{{ MEDIA_URL }}{% endverbatim %}
+                # 'django.template.context_processors.media',
             ],
         },
     },
@@ -88,20 +93,20 @@ WSGI_APPLICATION = 'config.wsgi.application'
 {% if database == 'postgresql' %}DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env.str('DB_NAME'),
-        'USER': env.str('DB_USER'),
-        'PASSWORD': env.str('DB_PASSWORD'),
-        'HOST': env.str('DB_HOST'),
-        'PORT': env.str('DB_PORT'),
+        'NAME': {% if env != 'no_env' %}os.getenv("DB_NAME"){% else %}""{% endif %},
+        'USER': {% if env != 'no_env' %}os.getenv("DB_USER"){% else %}""{% endif %},
+        'PASSWORD': {% if env != 'no_env' %}os.getenv("DB_PASSWORD"){% else %}""{% endif %},
+        'HOST': {% if env != 'no_env' %}os.getenv("DB_HOST"){% else %}""{% endif %},
+        'PORT': {% if env != 'no_env' %}os.getenv("DB_PORT"){% else %}""{% endif %},
     }
 }{% elif database == 'mysql' %}DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': env.str('DB_NAME'),
-        'USER': env.str('DB_USER'),
-        'PASSWORD': env.str('DB_PASSWORD'),
-        'HOST': env.str('DB_HOST'),
-        'PORT': env.str('DB_PORT'),
+        'NAME': {% if env != 'no_env' %}os.getenv("DB_NAME"){% else %}""{% endif %},
+        'USER': {% if env != 'no_env' %}os.getenv("DB_USER"){% else %}""{% endif %},
+        'PASSWORD': {% if env != 'no_env' %}os.getenv("DB_PASSWORD"){% else %}""{% endif %},
+        'HOST': {% if env != 'no_env' %}os.getenv("DB_HOST"){% else %}""{% endif %},
+        'PORT': {% if env != 'no_env' %}os.getenv("DB_PORT"){% else %}""{% endif %},
     }
 }{% else %}DATABASES = {
     'default': {
@@ -165,7 +170,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/{{ django_docs_version }}/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [STATIC_DIR,]
+{% if use_project_level_static %}STATICFILES_DIRS = [STATIC_DIR,]{% endif %}
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = "/media/"
@@ -180,8 +185,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD"){% endif %}
+EMAIL_HOST_USER = {% if env != 'no_env' %}os.getenv("EMAIL_HOST_USER"){% else %}""{% endif %}
+EMAIL_HOST_PASSWORD = {% if env != 'no_env' %}os.getenv("EMAIL_HOST_PASSWORD"){% else %}""{% endif %}{% endif %}
 
 {% if use_celery %}# Celery Configuration Options
 CELERY_TIMEZONE = "UTC"

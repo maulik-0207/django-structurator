@@ -6,7 +6,7 @@ with open('./docs/README.md', 'r') as fh:
 
 setup(
     name="django-structurator",
-    version="0.1.1",
+    version="0.1.2",
     author='@maulik-0207',
     author_email='maulikthumar784@gmail.com',
     description='A CLI tool to rapidly generate Django projects with a well-structured folder and configuration setup.',
@@ -40,7 +40,7 @@ setup(
     ],
     python_requires='>=3.8',
     install_requires=[
-        "jinja2",
+        "inquirer",
         "django",
     ],
     entry_points={

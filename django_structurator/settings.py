@@ -6,13 +6,19 @@ APP_TEMPLATES_DIR = TEMPLATES_DIR / "app_template"
 PROJECT_TEMPLATE_DIR  = TEMPLATES_DIR / "project_template"
 
 PROJECT_NAME_PATTERN = r'^[a-zA-Z][a-zA-Z0-9_]*$'
+INVALID_PROJECT_NAME_MESSAGE = "It must start with a letter, and contain only letters, numbers, and underscores."
 DISALLOWED_PROJECT_NAMES = []
+
+ENV_CHOICES = ['django-environ', 'python-dotenv', 'no_env']
+DEFAULT_ENV = 'django-environ'
 
 DATABASE_CHOICES = ['postgresql', 'mysql', 'sqlite']
 DEFAULT_DATABASE = 'sqlite'
 
 DJANGO_PROJECT_FEATURES = {
     # feature_name : feature_key
+    'Project level static folder' : 'use_project_level_static',
+    'Project level template folder' : 'use_project_level_template',
     'Advanced Password Hashers (argon2, bcrypt)': 'use_password_hashers',
     'Configure SMTP Email': 'use_smtp_email',
     'Django Debug Toolbar': 'use_debug_toolbar',
@@ -23,6 +29,7 @@ DJANGO_PROJECT_FEATURES = {
 
 
 APP_NAME_PATTERN = r'^[a-z_][a-z0-9_]*$'
+INVALID_APP_NAME_MESSAGE = "It must start with a lowercase letter, and contain only lowercase letters, numbers, and underscores."
 DISALLOWED_APP_NAMES = []
 
 DJANGO_APP_FEATURES = {

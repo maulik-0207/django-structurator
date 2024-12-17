@@ -1,13 +1,13 @@
-{% raw %}{% extends 'base.html' %}{% endraw %}
+{% verbatim %}{% extends 'base.html' %}{% endverbatim %}
 
-{% raw %}{% block head %}{% endraw %}
+{% verbatim %}{% block head %}{% endverbatim %}
 <!-- This heading is from index.html  -->
-{% raw %}{% endblock %}{% endraw %}
+{% verbatim %}{% endblock %}{% endverbatim %}
 
-{% raw %}{% block content %}{% endraw %}
+{% verbatim %}{% block content %}{% endverbatim %}
 <h1>This is index page of {{project_name}}</h1>
-{% raw %}{% endblock %}{% endraw %}
+{% verbatim %}{% endblock %}{% endverbatim %}
 
-{% raw %}{% block script %}{% endraw %}
+{% verbatim %}{% block script %}{% endverbatim %}
 <!-- This Script is from index.html  -->
-{% raw %}{% endblock %}{% endraw %}
+{% verbatim %}{% endblock %}{% endverbatim %}

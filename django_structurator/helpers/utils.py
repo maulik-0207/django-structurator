@@ -1,11 +1,13 @@
 import os
 import shutil
-from jinja2 import Environment, FileSystemLoader
+from django.template import Context, Template
+from django.conf import settings
+from django import setup
 
 class FolderGenerator:
     
     def __init__(self, config, folder_structure, template_folder) -> None:
-        self.base_path = config.get('project_path') or config.get('base_path')
+        self.base_path = config.get('project_path') or config.get('base_path') or config.get('app_path')
         self.folder_structure = folder_structure
         self.template_folder = template_folder
         self.config = config
@@ -45,26 +47,37 @@ class FolderGenerator:
                 self._get_files_directories(folder_path, content)
 
     def _create_file_from_template(self, file_path, template_path, context):
-        # Get the directory of the template
-        template_dir = os.path.dirname(template_path)
-        template_name = os.path.basename(template_path)
-
-        # Create a Jinja2 environment with the template directory
-        env = Environment(loader=FileSystemLoader(template_dir))
-
         try:
-            # Load the template
-            template = env.get_template(template_name)
+            if not settings.configured:
+                settings.configure(
+                    TEMPLATES=[
+                        {
+                            "BACKEND": "django.template.backends.django.DjangoTemplates",
+                            "DIRS": [],
+                            "APP_DIRS": False,
+                            "OPTIONS": {},
+                        }
+                    ]
+                )
+                setup()
+            
+            # Read the template content
+            with open(template_path, "r", encoding="utf-8") as template_file:
+                template_content = template_file.read()
+
+            # Create a Django Template object
+            template = Template(template_content)
 
             # Render the template with the provided context
-            rendered_content = template.render(context)
+            rendered_content = template.render(Context(context))
 
-            # Create the file and write the rendered content
+            # Create the file and write the cleaned content
             with open(file_path, "w", encoding="utf-8") as file:
                 file.write(rendered_content)
 
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"An error occured during creation of file : {file_path}")
+            print(f"Error: {e}\n")
     
     def _create_directories(self, directories):
         for directory in directories:
