@@ -1,8 +1,6 @@
 import os
 import shutil
-from jinja2 import Environment, FileSystemLoader
 from django.template import Context, Template
-from django.template.loader import get_template
 from django.conf import settings
 from django import setup
 
@@ -55,7 +53,7 @@ class FolderGenerator:
                     TEMPLATES=[
                         {
                             "BACKEND": "django.template.backends.django.DjangoTemplates",
-                            "DIRS": [],  # No template dirs needed as we're passing templates manually
+                            "DIRS": [],
                             "APP_DIRS": False,
                             "OPTIONS": {},
                         }
@@ -78,7 +76,8 @@ class FolderGenerator:
                 file.write(rendered_content)
 
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"An error occured during creation of file : {file_path}")
+            print(f"Error: {e}\n")
     
     def _create_directories(self, directories):
         for directory in directories:

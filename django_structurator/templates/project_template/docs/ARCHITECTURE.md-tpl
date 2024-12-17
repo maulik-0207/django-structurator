@@ -3,13 +3,18 @@
 The `{{ project_name }}` project is organized to promote scalability, maintainability, and separation of concerns. Below is a detailed overview of the folder structure:
 
 ## Root Directory
+```
 {{ project_name }}/ 
 │
 ├── docs/
-│   ├── README.md
+│   ├── ARCHITECTURE.md
 │   ├── CHANGELOG.md
-│   ├── deployment.md
-│   └── local-development.md
+│   ├── README.md
+│   ├── TROUBLESHOOTING.md
+│   └── USAGE.md
+│
+├── local_db/
+│   └── db.sqlite3
 │
 ├── requirements/
 │   ├── base.txt
@@ -18,39 +23,39 @@ The `{{ project_name }}` project is organized to promote scalability, maintainab
 │   └── test.txt
 │
 ├── src/
-│   ├── config/
+│   ├── apps/
+│   │
+│   ├── common/
 │   │   ├── __init__.py
-│   │   ├── asgi.py
-│   │   ├── .env
-│   │   ├── .env.example
+│   │   ├── constants.py
+│   │   └── helpers.py
+│   │
+│   ├── config/
 │   │   ├── settings/
 │   │   │   ├── __init__.py
 │   │   │   ├── base.py
 │   │   │   ├── development.py
 │   │   │   └── production.py
+│   │   ├── __init__.py
+│   │   ├── .env
+│   │   ├── .env.example
+│   │   ├── asgi.py
 │   │   ├── urls.py
 │   │   └── wsgi.py
 │   │
-│   ├── apps/
-│   ├── common/
-│   │   ├── __init__.py
-│   │   ├── constants.py
-│   │   ├── exceptions.py
-│   │   ├── pagination.py
-│   │   ├── permissions.py
-│   │   └── helpers.py
-│   │
 │   ├── media/
+│   │
 │   ├── static/
-│   │   ├── js/
 │   │   ├── css/
-│   │   └── image/
+│   │   ├── js/
+│   │   └── images/
 │   │       └── favicon.ico
 │   │
 │   ├── templates/
-│   │   └── base.html
+│   │   ├── base.html
+│   │   └── index.html
 │   │
 │   └── manage.py
 │
 └── .gitignore
-
+```

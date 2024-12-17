@@ -40,7 +40,7 @@ setup(
     ],
     python_requires='>=3.8',
     install_requires=[
-        "jinja2",
+        "inquirer",
         "django",
     ],
     entry_points={
