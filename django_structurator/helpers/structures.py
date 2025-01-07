@@ -47,6 +47,7 @@ PROJECT_STRUCTURE = {
                 'favicon.ico',
             ],
         },
+        
         'templates': [
             'base.html',
             'index.html'
@@ -55,10 +56,13 @@ PROJECT_STRUCTURE = {
         None : ['manage.py']
         
     },
+    
     None: ['.gitignore']
 }
 
+
 APP_STRUCTURE = {
+    
     None : [
         '__init__.py',
         'admin.py',
@@ -72,4 +76,5 @@ APP_STRUCTURE = {
     'migrations': [
         '__init__.py'
     ],
+    
 }

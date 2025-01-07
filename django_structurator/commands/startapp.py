@@ -6,11 +6,11 @@ from django_structurator.commands.base import BaseStructurator
 from django_structurator.helpers.structures import APP_STRUCTURE
 from django_structurator.helpers.utils import FolderGenerator
 from django_structurator.settings import (
+    APP_TEMPLATES_DIR,
     APP_NAME_PATTERN,
     INVALID_APP_NAME_MESSAGE,
     DISALLOWED_APP_NAMES,
-    DJANGO_APP_FEATURES,
-    APP_TEMPLATES_DIR
+    DJANGO_APP_FEATURES
 )
 
 

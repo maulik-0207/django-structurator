@@ -3,12 +3,13 @@ import re
 import django
 import pkg_resources
 from sys import platform
-from django_structurator.commands.base import BaseStructurator
 from django.core.checks.security.base import SECRET_KEY_INSECURE_PREFIX
 from django.core.management.utils import get_random_secret_key
+from django_structurator.commands.base import BaseStructurator
 from django_structurator.helpers.structures import PROJECT_STRUCTURE
 from django_structurator.helpers.utils import FolderGenerator
 from django_structurator.settings import (
+    PROJECT_TEMPLATE_DIR,
     PROJECT_NAME_PATTERN,
     INVALID_PROJECT_NAME_MESSAGE,
     DISALLOWED_PROJECT_NAMES,
@@ -16,33 +17,20 @@ from django_structurator.settings import (
     DEFAULT_DATABASE,
     ENV_CHOICES,
     DEFAULT_ENV,
-    DJANGO_PROJECT_FEATURES,
-    PROJECT_TEMPLATE_DIR
+    DJANGO_PROJECT_FEATURES
 )
 
 
 class DjangoProjectStructurator(BaseStructurator):
+    """Class to create Django Project with user choices and best folder structure.
+    """
     
-    def __init__(self):
+    def __init__(self) -> None:
         self.config = {}
-            
-    def _path_validator(self, path):
-        expanded_path = os.path.abspath(os.path.expanduser(path))
-        
-        # If path doesn't exist, ask to create
-        if not os.path.exists(expanded_path):
-            create = super()._yes_no_prompt(
-                f"Path {expanded_path} does not exist. Do you want to create it?", 
-                default=True,
-            )
-            if create:
-                os.makedirs(expanded_path)
-            else:
-                raise ValueError("Path does not exist and was not created.")
-        
-        return expanded_path
     
-    def _project_name_validator(self, name):
+    def _project_name_validator(self, name: str) -> str:
+        """Validator for Project Name.
+        """
         if not name:
             raise ValueError("Project name cannot be empty.")
 
@@ -61,8 +49,27 @@ class DjangoProjectStructurator(BaseStructurator):
             raise ValueError(f"Invalid project name. '{name}' is disallowed.")
         
         return name
+            
+    def _path_validator(self, path: str) -> str:
+        expanded_path = os.path.abspath(os.path.expanduser(path))
+        
+        # If path doesn't exist, ask to create
+        if not os.path.exists(expanded_path):
+            create = super()._yes_no_prompt(
+                f"Path {expanded_path} does not exist. Do you want to create it?", 
+                default=True,
+            )
+            if create:
+                os.makedirs(expanded_path)
+            else:
+                raise ValueError("Path does not exist and was not created.")
+        
+        return expanded_path
     
-    def _get_project_configurations(self):
+    def _get_project_configurations(self) -> None:
+        """This function will take all user choices and store it into class level config variable.
+        """
+        
         project_name = super()._prompt(
             "Enter project name",
             validator= self._project_name_validator
@@ -158,7 +165,10 @@ class DjangoProjectStructurator(BaseStructurator):
         else:
             self._print_windows_success_help()
     
-    def generate_project(self):
+    def generate_project(self) -> None:
+        """This function will use all above function to create Django project with user choices.
+        """
+        
         self._get_project_configurations()
         
         self.config['django_docs_version'] = django.get_version()
@@ -175,20 +185,16 @@ class DjangoProjectStructurator(BaseStructurator):
         print("")
         confirm = super()._yes_no_prompt("Do you want to proceed with project creation?", default=True)
         if confirm:
+            
             if config.get("use_celery", False) == True:
                 PROJECT_STRUCTURE['src']['config'][None].append("celery.py")
+            
             if config.get("database") == 'sqlite':
                 PROJECT_STRUCTURE['local_db'] = []
             
             if config.get("env") == 'no_env':
                 PROJECT_STRUCTURE['src']['config'][None].remove('.env')
                 PROJECT_STRUCTURE['src']['config'][None].remove('.env.example')
-                
-            if config.get("use_project_level_static", True) == False:
-                del PROJECT_STRUCTURE['src']['static']
-                
-            if config.get("use_project_level_template", True) == False:
-                del PROJECT_STRUCTURE['src']['templates']
                 
             folder_generator = FolderGenerator(
                 self.config,

@@ -2,14 +2,12 @@ import inquirer
 
 
 class BaseStructurator:
+    """Contains common functions that is used by DjangoProjectStructurator & DjangoAppStructurator.
+    """
     
-    def _prompt(
-        self,
-        question: str, 
-        default: str = None, 
-        validator: callable = None, 
-        options: list[str] = None
-    ) -> str:
+    def _prompt(self, question: str, default: str= None, validator: callable = None, options: list[str] = None) -> str:
+        """This function will ask question to user and returns validated answer of user.
+        """
         
         while True:
             if options:
@@ -30,14 +28,11 @@ class BaseStructurator:
                     except ValueError as e:
                         print(f"{e}")
                         continue
-                return user_input
-                    
-        
-    def _yes_no_prompt(
-        self, 
-        question: str, 
-        default: bool = False,
-    ) -> bool:
+                else:
+                    return user_input
+
+    def _yes_no_prompt(self, question: str, default: bool = False) -> bool:
+        """This function will ask yes/no question to user and returns valid bool.
+        """
         
         return inquirer.confirm(question, default=default)
-      
