@@ -4,18 +4,22 @@ from django.template import Context, Template
 from django.conf import settings
 from django import setup
 
+
 class FolderGenerator:
+    """Class to create any kind of folder structure with provided context data and template folder.
+    """    
     
-    def __init__(self, config, folder_structure, template_folder) -> None:
-        self.base_path = config.get('project_path') or config.get('base_path') or config.get('app_path')
+    def __init__(self, config: dict, folder_structure: dict, template_folder: str) -> None:
+        self.base_path = config.get('project_path') or config.get('app_path') or config.get('base_path') 
         self.folder_structure = folder_structure
         self.template_folder = template_folder
         self.config = config
         self.files = dict()
         self.directories = []
         
-    def _get_files_directories(self, base_path, folder_structure):
-        
+    def _get_files_directories(self, base_path: str, folder_structure: dict) -> None:
+        """This function will find path of all files & directories and store it to class level files & directories variables.
+        """        
         for folder, content in folder_structure.items():
             if folder == None:
                 folder_path = base_path
@@ -46,7 +50,9 @@ class FolderGenerator:
             elif isinstance(content, dict):
                 self._get_files_directories(folder_path, content)
 
-    def _create_file_from_template(self, file_path, template_path, context):
+    def _create_file_from_template(self, file_path: str, template_path: str, context: dict) -> None:
+        """This function will create file from template file and context data using Django Template Engine.
+        """        
         try:
             if not settings.configured:
                 settings.configure(
@@ -79,12 +85,19 @@ class FolderGenerator:
             print(f"An error occured during creation of file : {file_path}")
             print(f"Error: {e}\n")
     
-    def _create_directories(self, directories):
+    def _create_directories(self, directories: list) -> None:
+        """This function will create all directories provided in the list. 
+        """
         for directory in directories:
             if not os.path.exists(directory):
                 os.mkdir(directory)
     
-    def _create_files(self, files):
+    def _create_files(self, files: dict) -> None:
+        """This function will take file path in key and template path in value.
+        If template path and ends with -tpl: it will create file from template and context data.
+        If template path and doesn't end with -tpl: it will copy template to file location.
+        If template path is None: it will create empty file.
+        """
         for file_path, temp_path in files.items():
             if temp_path and str(temp_path).endswith("-tpl"):
                 self._create_file_from_template(file_path, temp_path, self.config)
@@ -94,7 +107,9 @@ class FolderGenerator:
                 with open(file_path, 'w') as file:
                     file.write("")
     
-    def generate(self):
+    def generate(self) -> None:
+        """This function will use all above functions to create provided folder structure.
+        """
         self._get_files_directories(self.base_path, self.folder_structure)
         self._create_directories(self.directories)
         self._create_files(self.files)

@@ -1,5 +1,5 @@
 """
-@shared_task 
+@shared_task(name='any_name')
 def add(x, y): # add.delay(10, 20)
     return x + y
 

@@ -10,3 +10,5 @@ django-redis{% endif %}
 {% if use_celery %}celery
 django-celery-results{% endif %}
 {% if use_drf %}djangorestframework{% endif %}
+{% if use_cors %}django-cors-headers{% endif %}
+{% if use_jazzmin %}django-jazzmin{% endif %}

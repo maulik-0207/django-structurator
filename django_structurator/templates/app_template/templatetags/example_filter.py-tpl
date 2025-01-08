@@ -1,7 +1,7 @@
 """
 ---> Simple Filter <---
 @register.filter
-def to_uppercase(value): # Use -> {% raw %}{{ some_variable|to_uppercase }}{% endraw %}
+def to_uppercase(value): # Use -> {% verbatim %}{{ some_variable|to_uppercase }}{% endverbatim %}
     if not isinstance(value, str):
         return value
     return value.upper()
@@ -9,7 +9,7 @@ def to_uppercase(value): # Use -> {% raw %}{{ some_variable|to_uppercase }}{% en
 
 ---> Filter with Arguments <---
 @register.filter
-def truncate_chars(value, num_chars): # Use -> {% raw %}{{ some_variable|truncate_chars:10 }}{% endraw %}
+def truncate_chars(value, num_chars): # Use -> {% verbatim %}{{ some_variable|truncate_chars:10 }}{% endverbatim %}
     if not isinstance(value, str) or not isinstance(num_chars, int):
         return value
     return value[:num_chars] + "..." if len(value) > num_chars else value
