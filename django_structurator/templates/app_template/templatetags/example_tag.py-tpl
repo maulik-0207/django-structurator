@@ -1,14 +1,14 @@
 """
 ---> Simple Tag <---
 @register.simple_tag
-def current_year(): # Use -> {% raw %}{% current_year %}{% endraw %}
+def current_year(): # Use -> {% verbatim %}{% current_year %}{% endverbatim %}
     from datetime import datetime
     return datetime.now().year
 
 
 ---> Tag with Arguments <---
 @register.simple_tag
-def multiply(value1, value2): # Use -> {% raw %}{% multiply 5 10 %}{% endraw %}
+def multiply(value1, value2): # Use -> {% verbatim %}{% multiply 5 10 %}{% endverbatim %}
     return value1 * value2
 """
 from django import template

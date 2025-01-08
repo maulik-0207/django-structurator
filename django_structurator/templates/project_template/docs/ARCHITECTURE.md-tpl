@@ -1,61 +1,101 @@
-# Project Architecture
+# Project Folder Architecture
 
-The `{{ project_name }}` project is organized to promote scalability, maintainability, and separation of concerns. Below is a detailed overview of the folder structure:
+The `{{ project_name }}` project is designed to ensure scalability, maintainability, and clear separation of concerns. Below is a detailed overview of the folder structure:
 
-## Root Directory
+## Project Directory Structure
 ```
 {{ project_name }}/ 
 │
-├── docs/
-│   ├── ARCHITECTURE.md
-│   ├── CHANGELOG.md
-│   ├── README.md
-│   ├── TROUBLESHOOTING.md
-│   └── USAGE.md
+├── docs/                     # Documentation files
+│   ├── ARCHITECTURE.md       # Project folder architecture guide
+│   ├── CHANGELOG.md          # Change log for the project
+│   ├── README.md             # Main documentation file
+│   ├── TROUBLESHOOTING.md    # Common issues and solutions
+│   └── USAGE.md              # Instructions on using the project
 │
-├── local_db/
+├── local_db/                 # Local SQLite database for development
 │   └── db.sqlite3
 │
-├── requirements/
-│   ├── base.txt
-│   ├── development.txt
-│   ├── production.txt
-│   └── test.txt
+├── requirements/             # Dependency management
+│   ├── base.txt              # Core dependencies
+│   ├── development.txt       # Development-specific dependencies
+│   ├── production.txt        # Production-specific dependencies
+│   └── test.txt              # Testing dependencies
 │
-├── src/
-│   ├── apps/
+├── src/                      # Main source code folder
+│   ├── apps/                 # All Django apps
 │   │
-│   ├── common/
+│   ├── common/               # Shared utilities, constants, and helpers
 │   │   ├── __init__.py
-│   │   ├── constants.py
-│   │   └── helpers.py
+│   │   ├── constants.py      # Commonly used constants
+│   │   └── helpers.py        # Utility functions
 │   │
-│   ├── config/
-│   │   ├── settings/
+│   ├── config/               # Project configuration
+│   │   ├── settings/         # Environment-specific settings
 │   │   │   ├── __init__.py
-│   │   │   ├── base.py
-│   │   │   ├── development.py
-│   │   │   └── production.py
+│   │   │   ├── base.py       # Base settings
+│   │   │   ├── development.py # Development environment settings
+│   │   │   └── production.py # Production environment settings
 │   │   ├── __init__.py
-│   │   ├── .env
-│   │   ├── .env.example
-│   │   ├── asgi.py
-│   │   ├── urls.py
-│   │   └── wsgi.py
+│   │   ├── .env              # Environment variables
+│   │   ├── .env.example      # Example environment variable file
+│   │   ├── asgi.py           # ASGI configuration
+│   │   ├── urls.py           # URL configuration
+│   │   └── wsgi.py           # WSGI configuration
 │   │
-│   ├── media/
+│   ├── media/                # Uploaded media files
 │   │
-│   ├── static/
-│   │   ├── css/
-│   │   ├── js/
-│   │   └── images/
-│   │       └── favicon.ico
+│   ├── static/               # Static files
+│   │   ├── css/              # CSS files
+│   │   ├── js/               # JavaScript files
+│   │   └── images/           # Image files
+│   │       └── favicon.ico   # Favicon
 │   │
-│   ├── templates/
-│   │   ├── base.html
-│   │   └── index.html
+│   ├── templates/            # HTML templates
+│   │   ├── base.html         # Base HTML template
+│   │   └── index.html        # Homepage template
 │   │
-│   └── manage.py
+│   └── manage.py             # Django's management script
 │
-└── .gitignore
+└── .gitignore                # Git ignore file
+```
+
+## App Directory Structure
+```
+apps/
+│
+├── app-1/                    # Example app
+│   │
+│   ├── api/                  # API for app-1
+│   │   ├── v1/               # Version 1 of the API
+│   │   │   ├── __init__.py
+│   │   │   ├── serializers.py # Serializers for API data
+│   │   │   ├── urls.py        # API URL patterns
+│   │   │   └── views.py       # API views
+│   │   └── __init__.py
+│   │
+│   ├── migrations/           # Database migrations
+│   │   └── __init__.py
+│   │
+│   ├── templatetags/         # Custom template tags and filters
+│   │   ├── __init__.py
+│   │   ├── example_filter.py # Custom filter example
+│   │   └── example_tag.py    # Custom tag example
+│   │
+│   ├── __init__.py
+│   ├── admin.py              # Admin site configuration
+│   ├── apps.py               # App configuration
+│   ├── forms.py              # App-specific forms
+│   ├── models.py             # App models
+│   ├── signals.py            # Signal handlers
+│   ├── tasks.py              # Celery tasks
+│   ├── tests.py              # Unit tests
+│   ├── urls.py               # App-specific URL patterns
+│   ├── validators.py         # Custom validators
+│   └── views.py              # App views
+│
+├── app-2/                    # Another app
+├── app-3/
+├── ...
+└── app-4/
 ```

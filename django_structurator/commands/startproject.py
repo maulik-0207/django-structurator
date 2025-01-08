@@ -105,7 +105,9 @@ class DjangoProjectStructurator(BaseStructurator):
                 default=False
             )
     
-    def _print_windows_success_help(self):
+    def _print_windows_success_help(self) -> None:
+        """This function will print next steps for Windows user after creation of new Django Project.
+        """
         print("\n🌟 Next Steps for Your Django Project:")
         
         print("\n1. Create a Virtual Environment:")
@@ -131,7 +133,9 @@ class DjangoProjectStructurator(BaseStructurator):
         print("\n7. Run Development Server:")
         print("   python manage.py runserver")
     
-    def _print_unix_success_help(self):
+    def _print_unix_success_help(self) -> None:
+        """This function will print next steps for Linux/macOS user after creation of new Django Project.
+        """
         print("\n🌟 Next Steps for Your Django Project:")
         
         print("\n1. Create a Virtual Environment:")
@@ -157,7 +161,9 @@ class DjangoProjectStructurator(BaseStructurator):
         print("\n7. Run Development Server:")
         print("   python manage.py runserver")
     
-    def print_success_help(self):
+    def print_success_help(self) -> None:
+        """This function will call success_help function according to OS type.
+        """
         if platform == "darwin" or platform == "linux" or platform == "linux2":
             self._print_unix_success_help()
         elif platform == "win32":
@@ -186,15 +192,15 @@ class DjangoProjectStructurator(BaseStructurator):
         confirm = super()._yes_no_prompt("Do you want to proceed with project creation?", default=True)
         if confirm:
             
-            if config.get("use_celery", False) == True:
-                PROJECT_STRUCTURE['src']['config'][None].append("celery.py")
-            
             if config.get("database") == 'sqlite':
                 PROJECT_STRUCTURE['local_db'] = []
-            
+                
             if config.get("env") == 'no_env':
                 PROJECT_STRUCTURE['src']['config'][None].remove('.env')
                 PROJECT_STRUCTURE['src']['config'][None].remove('.env.example')
+                
+            if config.get("use_celery", False) == True:
+                PROJECT_STRUCTURE['src']['config'][None].append("celery.py")
                 
             folder_generator = FolderGenerator(
                 self.config,

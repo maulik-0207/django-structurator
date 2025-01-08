@@ -5,5 +5,5 @@ class MyModelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 """
 from rest_framework import serializers
-from .models import *
+from ...models import *
 

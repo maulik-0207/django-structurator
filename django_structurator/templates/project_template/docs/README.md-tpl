@@ -1,3 +1,38 @@
-# {{ project_name }}
+# {{ project_name|title }}
 
-Welcome to the {{ project_name }} project! This project was created using Django Structurator.
+{{ project_name }} is a Django-based web application. This project adheres to best practices for maintainability, scalability, and developer convenience.
+
+---
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository_url>
+   cd {{ project_name }}
+   ```
+2. Create a virtual environment and activate it:
+
+    - macOS/Linux:
+        ```bash
+        python3 -m venv venv
+        source venv/bin/activate
+        ```
+    - Windows:
+        ```bash
+        python -m venv venv
+        venv\Scripts\activate
+        ```
+3. Install the dependencies:
+    ```bash
+    pip install -r requirements/development.txt
+    ```
+4. Set up environment variables
+5. Apply migrations:
+    ```bash
+    python src/manage.py migrate
+    ```
+6. Run the development server:
+    ```bash
+    python src/manage.py runserver
+    ```

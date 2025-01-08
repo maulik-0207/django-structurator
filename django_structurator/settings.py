@@ -28,6 +28,7 @@ DJANGO_PROJECT_FEATURES = {
     'Redis cache/message broker': 'use_redis',
     'Django Rest Framework (DRF)': 'use_drf',
     'Django Cors Headers': 'use_cors',
+    'Django Jazzmin for Admin Panel skins': 'use_jazzmin'
 }
 
 
@@ -38,11 +39,11 @@ DISALLOWED_APP_NAMES = []
 
 DJANGO_APP_FEATURES = {
     # feature_name : feature_key
+    'validators.py': 'use_validators_py',
     'forms.py': 'use_forms_py',
     'signals.py': 'use_signals_py',
-    'validators.py': 'use_validators_py',
     'tasks.py for Celery tasks' : 'use_tasks_py',
-    'template tags/filters' : 'use_template_tags',
     'App level static and template folder' : 'use_app_static_template',
+    'template tags/filters' : 'use_template_tags',
     'API using DRF' : 'use_api_drf',
 }

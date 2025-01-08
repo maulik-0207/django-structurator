@@ -17,15 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
-{% if use_project_level_static %}from django.conf.urls.static import static{% endif %}
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
 if settings.DEBUG:
-    {% if use_project_level_static %}urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT){% endif %}
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
     urlpatterns += [
-        {% if use_debug_toolbar %}path("__debug__/", include("debug_toolbar.urls")),{% endif %}
+        path("__debug__/", include("debug_toolbar.urls")),
     ]

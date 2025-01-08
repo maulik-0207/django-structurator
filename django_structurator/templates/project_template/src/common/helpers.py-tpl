@@ -4,16 +4,7 @@ from django.conf import settings
 from django.utils.html import strip_tags
 
 
-def send_email(
-        subject: str,
-        ctx: dict[str,any], 
-        template_path: str, 
-        recipient_list: list[str], 
-        attachment_list: list[dict] = None
-    ):
-
-    attachment_list = attachment_list or []
-    
+def send_email(subject: str, ctx: dict[str,any], template_path: str, recipient_list: list[str], attachment_list: list[dict] = []) -> int:
     try:
         email_from = settings.EMAIL_HOST_USER
         html_message = render_to_string(template_name=template_path, context=ctx)
@@ -29,16 +20,16 @@ def send_email(
 
         # Attach any files if provided
         for attachment in attachment_list:
-            message.attach(
-                filename=attachment.get("filename", "error.txt"),
-                content=attachment.get("content", "could not load attachment"),
-                mimetype=attachment.get("mimetype", "text/plain")
-            )
+            if attachment.get("filename") and attachment.get("content") and attachment.get("mimetype"): 
+                message.attach(
+                    filename=attachment.get("filename"),
+                    content=attachment.get("content"),
+                    mimetype=attachment.get("mimetype")
+                )
 
         # Send the email and return the result
         result = message.send()
         return result  # Returns the number of successfully sent emails
     except Exception as e:
-        # Log or handle the error as appropriate
-        print(f"Error sending email: {e}")
-        return False
+        print(f"Error while sending email: {e}")
+        return 0

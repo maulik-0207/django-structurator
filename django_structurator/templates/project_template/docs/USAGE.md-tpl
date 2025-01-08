@@ -1,6 +1,27 @@
 # Usage Guide
 
-## Running the Development Server
+This guide provides instructions for using various features of the `{{ project_name }}` Django project.
+
+---
+
+## Common Commands
+
+### Install dependencies
 ```bash
-python manage.py runserver
+pip install -r requirements/development.txt
+```
+
+### Apply migrations
+```bash
+python ./manage.py migrate
+```
+
+### Creating a Superuser
+```bash
+python ./manage.py createsuperuser
+```
+
+### Run the development server
+```bash
+python ./manage.py runserver
 ```
