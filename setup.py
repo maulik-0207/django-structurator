@@ -9,12 +9,12 @@ setup(
     version="1.0.0",
     author='@maulik-0207',
     author_email='maulikthumar784@gmail.com',
-    description='A CLI tool to rapidly generate Django projects with a well-structured folder and configuration setup.',
+    description='django-structurator is an open-source CLI tool that streamlines and accelerates the setup of well-organized Django projects and apps, enabling developers to focus on building features instead of boilerplate.',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/maulik-0207/django-structurator',
     project_urls={
-        # 'Documentation': 'https://django-structurator.readthedocs.io/',
+        'Documentation': 'https://github.com/maulik-0207/django-structurator/blob/master/docs/README.md',
         'Source': 'https://github.com/maulik-0207/django-structurator',
         'Tracker': 'https://github.com/maulik-0207/django-structurator/issues',
     },
@@ -40,13 +40,13 @@ setup(
     ],
     python_requires='>=3.8',
     install_requires=[
-        "inquirer",
         "django",
+        "inquirer"
     ],
     entry_points={
         "console_scripts": [
             "django-str = django_structurator.cli:main",
         ],
     },
-    keywords="django project generator cli tool",
+    keywords="django project-generator cli tool django-cli",
 )
