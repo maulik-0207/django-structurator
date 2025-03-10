@@ -6,10 +6,16 @@ from django import setup
 
 
 class FolderGenerator:
+    
     """Class to create any kind of folder structure with provided context data and template folder.
     """    
     
-    def __init__(self, config: dict, folder_structure: dict, template_folder: str) -> None:
+    def __init__(
+        self, 
+        config: dict, 
+        folder_structure: dict, 
+        template_folder: str
+    ) -> None:
         self.base_path = config.get('project_path') or config.get('app_path') or config.get('base_path') 
         self.folder_structure = folder_structure
         self.template_folder = template_folder

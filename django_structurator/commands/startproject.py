@@ -3,8 +3,10 @@ import re
 import django
 import pkg_resources
 from sys import platform
+
 from django.core.checks.security.base import SECRET_KEY_INSECURE_PREFIX
 from django.core.management.utils import get_random_secret_key
+
 from django_structurator.commands.base import BaseStructurator
 from django_structurator.helpers.structures import PROJECT_STRUCTURE
 from django_structurator.helpers.utils import FolderGenerator
@@ -22,6 +24,7 @@ from django_structurator.settings import (
 
 
 class DjangoProjectStructurator(BaseStructurator):
+    
     """Class to create Django Project with user choices and best folder structure.
     """
     
@@ -60,13 +63,17 @@ class DjangoProjectStructurator(BaseStructurator):
                 default=True,
             )
             if create:
-                os.makedirs(expanded_path)
+                try:
+                    os.makedirs(expanded_path)
+                except PermissionError:
+                    raise ValueError(f"Permission denied: Cannot create directory {expanded_path}")
             else:
                 raise ValueError("Path does not exist and was not created.")
         
         return expanded_path
     
     def _get_project_configurations(self) -> None:
+        
         """This function will take all user choices and store it into class level config variable.
         """
         
@@ -172,6 +179,7 @@ class DjangoProjectStructurator(BaseStructurator):
             self._print_windows_success_help()
     
     def generate_project(self) -> None:
+        
         """This function will use all above function to create Django project with user choices.
         """
         
@@ -185,8 +193,10 @@ class DjangoProjectStructurator(BaseStructurator):
         config = self.config
         
         print("\n🚀 Project Configuration Summary:")
+        print("=" * 40)
         for key, value in config.items():
             print(f"{key}: {value}")
+        print("=" * 40)
         
         print("")
         confirm = super()._yes_no_prompt("Do you want to proceed with project creation?", default=True)
@@ -209,7 +219,7 @@ class DjangoProjectStructurator(BaseStructurator):
             )
             folder_generator.generate()
             
-            print(f"Django project '{config['project_name']}' created successfully in {config['project_path']}")
+            print(f"Django project '{config['project_name']}' created successfully at {config['project_path']}")
             self.print_success_help()
         else:
             print("Project creation cancelled.")

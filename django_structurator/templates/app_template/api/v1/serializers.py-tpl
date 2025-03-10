@@ -3,6 +3,11 @@ class MyModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = ModelName
         fields = '__all__'
+    
+    def validate(self, attrs):
+        if attrs['password'] != attrs['confirm_password']:
+            raise serializers.ValidationError({"confirm_password": "Passwords do not match"})
+        return attrs
 """
 from rest_framework import serializers
 from ...models import *

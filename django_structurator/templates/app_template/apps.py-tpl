@@ -6,4 +6,4 @@ class {{app_name|title}}Config(AppConfig):
     name = 'apps.{{app_name}}'
 
     {% if use_signals_py %}def ready(self):
-        import signals{% endif %}
+        import apps.{{app_name}}.signals{% endif %}

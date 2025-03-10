@@ -15,6 +15,21 @@ All notable changes to the `django-structurator` project will be documented in t
 
 ---
 
+## [1.1.0] - 2025-03-10
+
+### Changed
+- Updated project and app templates content.
+
+### Removed
+- CLI interaction with inquirer is removed to make package more lightweight.
+- Removed USAGE.md and TROUBLESHOOTING.md from templates.
+
+### Fixed
+- Fixed issue with signals in AppConfig file template.
+
+
+---
+
 ## [1.0.0] - 2025-01-08
 
 ### Added

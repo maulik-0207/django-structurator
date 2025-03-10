@@ -1,3 +1,9 @@
 # Include all hidden template files
 recursive-include django_structurator/templates *
 recursive-include django_structurator/templates .*
+include docs/README.md
+include docs/CHANGELOG.md
+include LICENSE
+
+exclude venv/*
+exclude images/*

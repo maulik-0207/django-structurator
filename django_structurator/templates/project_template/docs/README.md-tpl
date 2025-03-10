@@ -1,6 +1,6 @@
 # {{ project_name|title }}
 
-{{ project_name }} is a Django-based web application. This project adheres to best practices for maintainability, scalability, and developer convenience.
+{{ project_name }} is a Django-based web application designed with a focus on maintainability, scalability, and developer productivity. It follows a modular structure and provides a solid foundation for building modern, high-performance web services or applications.
 
 ---
 
@@ -27,7 +27,13 @@
     ```bash
     pip install -r requirements/development.txt
     ```
-4. Set up environment variables
+4. Set up environment variables:
+
+    - Copy the example environment file and modify it as needed:
+      ```bash
+      cp src/config/.env.example src/config/.env
+      ```
+    - Edit `src/config/.env` to provide your environment-specific configurations.
 5. Apply migrations:
     ```bash
     python src/manage.py migrate
