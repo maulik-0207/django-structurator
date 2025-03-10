@@ -37,8 +37,8 @@ The `{{ project_name }}` project is designed to ensure scalability, maintainabil
 │   │   │   ├── development.py # Development environment settings
 │   │   │   └── production.py # Production environment settings
 │   │   ├── __init__.py
-│   │   ├── .env              # Environment variables
-│   │   ├── .env.example      # Example environment variable file
+│   │   ├── .env              # Environment variables (in config directory)
+│   │   ├── .env.example      # Example env file (in config directory)e
 │   │   ├── asgi.py           # ASGI configuration
 │   │   ├── urls.py           # URL configuration
 │   │   └── wsgi.py           # WSGI configuration
@@ -53,7 +53,7 @@ The `{{ project_name }}` project is designed to ensure scalability, maintainabil
 │   │
 │   ├── templates/            # HTML templates
 │   │   ├── base.html         # Base HTML template
-│   │   └── index.html        # Homepage template
+│   │   └── index.html        # Default landing page template
 │   │
 │   └── manage.py             # Django's management script
 │
@@ -61,10 +61,11 @@ The `{{ project_name }}` project is designed to ensure scalability, maintainabil
 ```
 
 ## App Directory Structure
+Each Django app follows a modular design with optional API, templates, and task management.
 ```
 apps/
 │
-├── app-1/                    # Example app
+├── app-1/                    # Example Django app
 │   │
 │   ├── api/                  # API for app-1
 │   │   ├── v1/               # Version 1 of the API
@@ -85,13 +86,13 @@ apps/
 │   ├── __init__.py
 │   ├── admin.py              # Admin site configuration
 │   ├── apps.py               # App configuration
-│   ├── forms.py              # App-specific forms
+│   ├── forms.py              # App-specific forms (optional)
 │   ├── models.py             # App models
-│   ├── signals.py            # Signal handlers
-│   ├── tasks.py              # Celery tasks
+│   ├── signals.py            # Signal handlers (optional)
+│   ├── tasks.py              # Celery tasks (optional)
 │   ├── tests.py              # Unit tests
 │   ├── urls.py               # App-specific URL patterns
-│   ├── validators.py         # Custom validators
+│   ├── validators.py         # Custom validators (optional)
 │   └── views.py              # App views
 │
 ├── app-2/                    # Another app

@@ -1,21 +1,20 @@
 from django_structurator.commands.startproject import startproject
 from django_structurator.commands.startapp import startapp
-
-__version__ = "1.0.0"
+import pkg_resources
 
 def main():
     import argparse
     import sys
 
     parser = argparse.ArgumentParser(
-        description="Django Structurator CLI - A tool to help you quickly create structured Django projects and apps.",
+        description="An open-source CLI tool to rapidly generate Django projects and apps with a well-structured folder and configuration setup.",
     )
 
     # Add a version option
     parser.add_argument(
         "-v", "--version",
         action="version",
-        version=f"Django Structurator CLI {__version__}",
+        version=f"Django Structurator CLI {pkg_resources.get_distribution('django_structurator').version}",
         help="Show the version of the Django Structurator CLI and exit."
     )
 

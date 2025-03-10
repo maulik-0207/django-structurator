@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-structurator"
+version = "1.1.0"
+description = "An open-source CLI tool to rapidly generate Django projects and apps with a well-structured folder and configuration setup."
+readme = "docs/README.md"
+requires-python = ">=3.8"
+authors = [
+    { name = "@maulik-0207" }
+]
+license = { text = "MIT" }
+keywords = ["django", "project-generator", "cli", "tool", "django-cli"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Framework :: Django"
+]
+
+dependencies = [
+    "django>=3.2"
+]
+
+[project.urls]
+Documentation = "https://github.com/maulik-0207/django-structurator/blob/master/docs/README.md"
+Source = "https://github.com/maulik-0207/django-structurator"
+
+[project.scripts]
+django-str = "django_structurator.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests", "venv*", "venv/*", "images*", "images/*"]
+
+[tool.setuptools.package-data]
+django_structurator = [
+    "templates/project_template/*",
+    "templates/project_template/**/*",
+    "templates/project_template/.*",
+    "templates/app_template/*",
+    "templates/app_template/**/*",
+    "templates/app_template/.*"
+]

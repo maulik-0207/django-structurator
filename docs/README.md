@@ -1,211 +1,180 @@
-# django-structurator
 
-`django-structurator` is an open-source CLI tool that streamlines and accelerates the setup of well-organized Django projects and apps, enabling developers to focus on building features instead of boilerplate.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/maulik-0207/django-structurator/master/images/django-structurator_logo.png" alt="django-structurator" width="600"/>
+</p>
 
-## Features
-- Create Django projects with a clean, advanced folder structure.
-- Create Django apps with proper separation of concerns.
-- Customizable project and app configurations based on user input.
-- Automatically generates essential files, such as `.env.example` and `.gitignore`.
+🚀 **django-structurator** is a lightweight CLI tool that helps you create Django projects and apps with a clean, scalable architecture—without boilerplate or repetitive setup.
 
-## Installation
-Install django-structurator from PyPI:
+No dependencies. No fluff. Just Python `input()` for fast, interactive prompts.
+
+---
+
+## ✅ What It Does
+
+- 📂 Create Django projects with a scalable folder structure.
+- ⚙️ Quickly generate Django apps with optional files (forms, signals, validators, API support, etc.).
+- 🔧 Customize project setup with advanced features like:
+  - Django Rest Framework (DRF)
+  - Django Debug Toolbar
+  - Celery
+  - Redis cache
+  - SMTP email config
+  - Jazzmin admin
+- 🎛️ Auto-generate essential files like `.env.example` and `.gitignore`.
+
+---
+
+## 🚀 Installation
 
 ```bash
 pip install django-structurator
 ```
 
-## Usage
+---
 
-django-structurator provides two main commands: `startproject` and `startapp`.
+## ⚡ Usage
 
-### 1. Create a Django Project
-
-To create a new Django project, use the `startproject` command:
+### Create a Django Project
 
 ```bash
 django-str startproject
 ```
 
-The CLI will guide you through a series of prompts to configure the project:
+Follow the prompts to:
+- Name your project
+- Choose a database: SQLite, PostgreSQL, MySQL
+- Pick `.env` configuration (django-environ, python-dotenv)
+- Add optional features (DRF, Celery, Redis, Debug Toolbar, etc.)
 
-- **Project Name**: Specify the name of your Django project.
-- **Database choices**: Choose database from options like postgresql, mysql, sqlite, etc.
-- **.env choices**: Choose .env configuration from options like django-environ, python-dotenv, etc.
-- **Advanced Features**: Choose options like Django Debug Toolbar, SMTP Email, Django Jazzmin, Celery, DRF, Redis, etc.
+✅ **Example Output:**
+```
+>> django-str startproject
+Enter project name: test
+Enter project path (default: E:\Django\test): 
 
-
-#### Example Output
-```bash
-(venv) PS E:\> django-str startproject
-[?] Enter project name: Test
-[?] Enter project path: C:\Users\user\Downloads\Test
-[?] Select database:
-   postgresql
-   mysql
- > sqlite
-
-[?] Select ENV configuration:
-   django-environ
-   python-dotenv
- > no_env
-
+Select database
+1. postgresql
+2. mysql
+3. sqlite
+Select an option (1-3): 3
 
 🔧 Optional Project Features:
-[?] Do you want to use Django Debug Toolbar? (y/N): y
-
-// Other fetures
-
-🚀 Project Configuration Summary:
+Do you want to use Django Debug Toolbar? (y/n) [default: n]: y
 ....
 
-[?] Do you want to proceed with project creation? (Y/n): y                                                                         
+🚀 Project Configuration Summary:
+========================================
+project_name: test
+project_path: E:\Django\test
+database: sqlite
+....
+========================================
 
-Django project 'Test' created successfully in C:\Users\user\Downloads\Test
-
-// success message
+Do you want to proceed with project creation? (y/n) [default: y]: y
+...
+Django project 'test' created successfully at E:\Django\test
 ```
 
-### 2. Create a Django App
+---
 
-To create a new Django app, use the `startapp` command:
-
-**Note :** Run this command from location where your project's `manage.py` file is situated.
+### Create a Django App
 
 ```bash
 django-str startapp
 ```
 
-The CLI will prompt you to configure the app:
+Follow the prompts to:
+- Name your app
+- Add files like: `forms.py`, `signals.py`, `validators.py`
+- Include optional features like:
+  - Template tags/filters
+  - Static and templates folders
+  - API folder structure (DRF)
 
-- **App Name**: Specify the name of your Django app.
-- **Additional Files Choices**: Choose files from options like validators.py, forms.py, signals.py, etc.
-- **Additional Features**: Choose features from options like App level static & template folder, template tags/filters, etc.
-- **Include API Support**: Optionally include basic API structure for the app.
-
-#### Example Output
-```bash
-(venv) PS C:\Users\user\Downloads\Test\src> django-str startapp
-[?] Enter App name: app1
+✅ **Example Output:**
+```
+>> django-str startapp    
+Enter App name: main
 
 🔧 Optional App Features:
-[?] Do you want to use validators.py? (y/N): y
-
-// Other fetures
-
-
-🚀 App Configuration Summary:
+Do you want to use validators.py? (y/n) [default: n]: y
 ....
 
-[?] Do you want to proceed with app creation? (Y/n): y                                                                                
+🚀 App Configuration Summary:
+app_dir: ...\test\src\apps
+app_name: main
+app_path: ...\test\src\apps\main
+use_validators_py: True
+....
 
+Do you want to proceed with app creation? (y/n) [default: y]: y
 
-🎉 Django app 'app1' created successfully!
-
-// success message
+🎉 Django app 'main' created successfully!
 ```
-
-## Project Folder Structure
-Here is an example of the advanced folder structure generated by django-structurator:
-
-```
-
-{{ project_name }}/
-│
-├── docs/                     # Documentation files
-│   ├── ARCHITECTURE.md       # Project folder architecture guide
-│   ├── CHANGELOG.md          # Change log for the project
-│   ├── README.md             # Main documentation file
-│   ├── TROUBLESHOOTING.md    # Common issues and solutions
-│   └── USAGE.md              # Instructions on using the project
-│
-├── local_db/                 # Local SQLite database for development
-│   └── db.sqlite3
-│
-├── requirements/             # Dependency management
-│   ├── base.txt              # Core dependencies
-│   ├── development.txt       # Development-specific dependencies
-│   ├── production.txt        # Production-specific dependencies
-│   └── test.txt              # Testing dependencies
-│
-├── src/                      # Main source code folder
-│   ├── apps/                 # All Django apps
-│   │   ├── app-1/            # Example app
-│   │   │   ├── api/          # API for app-1
-│   │   │   │   ├── v1/       # Version 1 of the API
-│   │   │   │   │   ├── __init__.py
-│   │   │   │   │   ├── serializers.py  # Serializers for API data
-│   │   │   │   │   ├── urls.py         # API URL patterns
-│   │   │   │   │   └── views.py        # API views
-│   │   │   │   └── __init__.py
-│   │   │   ├── migrations/   # Database migrations
-│   │   │   │   └── __init__.py
-│   │   │   ├── templatetags/   # Custom template tags and filters
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── example_filter.py   # Custom filter example
-│   │   │   │   └── example_tag.py      # Custom tag example
-│   │   │   ├── __init__.py
-│   │   │   ├── admin.py      # Admin site configuration
-│   │   │   ├── apps.py       # App configuration
-│   │   │   ├── forms.py      # App-specific forms
-│   │   │   ├── models.py     # App models
-│   │   │   ├── signals.py    # Signal handlers
-│   │   │   ├── tasks.py      # Celery tasks
-│   │   │   ├── tests.py      # Unit tests
-│   │   │   ├── urls.py       # App-specific URL patterns
-│   │   │   ├── validators.py # Custom validators
-│   │   │   └── views.py      # App views
-│   │   └── ...               # Additional apps
-│   │
-│   ├── common/               # Shared utilities, constants, and helpers
-│   │   ├── __init__.py
-│   │   ├── constants.py      # Commonly used constants
-│   │   └── helpers.py        # Utility functions
-│   │
-│   ├── config/               # Project configuration
-│   │   ├── settings/         # Environment-specific settings
-│   │   │   ├── __init__.py
-│   │   │   ├── base.py       # Base settings
-│   │   │   ├── development.py # Development environment settings
-│   │   │   └── production.py # Production environment settings
-│   │   ├── __init__.py
-│   │   ├── .env              # Environment variables
-│   │   ├── .env.example      # Example environment variable file
-│   │   ├── asgi.py           # ASGI configuration
-│   │   ├── urls.py           # URL configuration
-│   │   └── wsgi.py           # WSGI configuration
-│   │
-│   ├── media/                # Uploaded media files
-│   │
-│   ├── static/               # Static files
-│   │   ├── css/              # CSS files
-│   │   ├── js/               # JavaScript files
-│   │   └── images/           # Image files
-│   │       └── favicon.ico   # Favicon
-│   │
-│   ├── templates/            # HTML templates
-│   │   ├── base.html         # Base HTML template
-│   │   └── index.html        # Homepage template
-│   │
-│   └── manage.py             # Django's management script
-│
-└── .gitignore                # Git ignore file
-```
-
-## Requirements
-- Python 3.8+
-- Django 3.2+
-
-## Contributing
-Contributions are welcome! If you'd like to contribute, please:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix.
-3. Submit a pull request with a clear explanation of your changes.
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](./../LICENSE) file for details.
 
 ---
 
-Feel free to suggest features or report issues on our [GitHub repository](https://github.com/maulik-0207/django-structurator).
+## 🏗️ Example Project Structure
+
+```plaintext
+my_project/
+├── docs/
+├── local_db/
+├── requirements/
+├── src/
+│   ├── apps/
+│   │   ├── blog/
+│   │   │   ├── api/v1/
+│   │   │   ├── migrations/
+│   │   │   ├── templatetags/
+│   │   │   ├── admin.py
+│   │   │   ├── apps.py
+│   │   │   ├── forms.py
+│   │   │   ├── models.py
+│   │   │   ├── signals.py
+│   │   │   ├── tasks.py
+│   │   │   ├── validators.py
+│   │   │   └── views.py
+│   │   └── ...
+│   ├── common/
+│   ├── config/
+│   │   ├── settings/
+│   │   ├── urls.py
+│   │   ├── wsgi.py
+│   │   └── asgi.py
+│   ├── media/
+│   ├── static/
+│   ├── templates/
+│   └── manage.py
+└── .gitignore
+```
+
+---
+
+## ✅ Requirements
+
+- Python 3.8+
+- Django 3.2+
+
+---
+
+## 📄 License
+
+MIT License - See the [LICENSE](https://github.com/maulik-0207/django-structurator/blob/main/LICENSE)
+
+---
+
+## 🔗 Links
+
+- GitHub Repo: [maulik-0207/django-structurator](https://github.com/maulik-0207/django-structurator)
+- PyPI Package: [django-structurator](https://pypi.org/project/django-structurator/)
+
+
+---
+
+## Why Use django-structurator?
+
+🔥 **Save time**, avoid repetitive setup  
+🧹 Clean, maintainable architecture  
+⚡ Lightweight, no external dependencies  
+🛠️ Customizable project and app scaffolding  

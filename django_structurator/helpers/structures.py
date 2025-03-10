@@ -1,3 +1,18 @@
+"""
+PROJECT_STRUCTURE: 
+    Defines the directory and file structure of the Django project.
+    
+    Key Rules:
+    - Keys are folders.
+    - If key is None, its values are files in the current directory.
+    - Nested dicts represent subfolders.
+"""
+
+"""
+APP_STRUCTURE:
+    Defines the base Django app file/folder structure.
+"""
+
 
 PROJECT_STRUCTURE = {
     
@@ -5,8 +20,6 @@ PROJECT_STRUCTURE = {
         'ARCHITECTURE.md',
         'CHANGELOG.md',
         'README.md',
-        'TROUBLESHOOTING.md',
-        'USAGE.md',
     ],
     
     'requirements': [

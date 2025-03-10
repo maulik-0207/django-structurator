@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils.html import strip_tags
 
 
+# use like this: from common.helpers import send_email
 def send_email(subject: str, ctx: dict[str,any], template_path: str, recipient_list: list[str], attachment_list: list[dict] = []) -> int:
     try:
         email_from = settings.EMAIL_HOST_USER

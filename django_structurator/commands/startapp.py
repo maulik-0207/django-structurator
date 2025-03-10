@@ -14,6 +14,7 @@ from django_structurator.settings import (
 
 
 class DjangoAppStructurator(BaseStructurator):
+    
     """Class to create Django App with user choices and best folder structure.
     """
     
