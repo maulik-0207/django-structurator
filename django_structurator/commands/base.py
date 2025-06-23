@@ -19,7 +19,10 @@ class BaseStructurator:
             if options:
                 print(f"\n{question}")
                 for index, option in enumerate(options, start=1):
-                    print(f"{index}. {option}")
+                    if default and (option == default):
+                        print(f"{index}. {option} (default)")
+                    else:
+                        print(f"{index}. {option}")
                 try:
                     user_input = input(f"Select an option (1-{len(options)}): ").strip()
 
