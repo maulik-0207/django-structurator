@@ -15,6 +15,17 @@ All notable changes to the `django-structurator` project will be documented in t
 
 ---
 
+## [1.1.1] - 2025-06-23
+
+### Changed
+- Updated project and app templates content.
+
+### Fixed
+- Fixed issue with selection of options while project/app creatation.
+
+
+---
+
 ## [1.1.0] - 2025-03-10
 
 ### Changed

@@ -1,6 +1,4 @@
 """
-class ExampleModel(models.Model):
-    
     char_field = models.CharField(
         max_length=255,  # Maximum length for the field
         unique=True,  # Ensures uniqueness at the database level
@@ -15,56 +13,53 @@ class ExampleModel(models.Model):
            "max_length":"Username is too long, Max - 30."
         },
     )
-
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        help_text="Timestamp when this object was created.",
-    )
-    updated_at = models.DateTimeField(
-        auto_now=True,
-        help_text="Timestamp when this object was last updated.",
-    )
-
-    related_model = models.ForeignKey(
-        "AnotherModel",  # Replace with the actual related model
-        on_delete=models.CASCADE,  # Action to take when the related object is deleted
-        related_name="examples",  # Name for reverse relation
-        null=True,
-        blank=True,
-        help_text="A foreign key to AnotherModel.",
-    )
-
-    image_field = models.ImageField(
-        upload_to="images/",  # Directory to store uploaded images or
-        # upload_to=function_name,  # function to get directory path
-        null=True,
-        blank=True,
-        help_text="An image file field.",
-    )
-
-    class Meta:
-        verbose_name = "Example Model"
-        verbose_name_plural = "Example Models"
-        ordering = ["-created_at"]  # Default ordering for querysets
-        unique_together = ["char_field", "integer_field"]  # Unique together constraint
-
-    def save(self, *args, **kwargs):
-        if self.char_field:
-            self.char_field = self.char_field.capitalize()
-
-        super().save(*args, **kwargs)
-
-    def clean(self):
-        super().clean()
-
-        if self.integer_field and self.integer_field % 2 != 0:
-            raise ValidationError({"integer_field": "Integer field must be an even number."})
-
-    def __str__(self):
-        return f"ExampleModel ({self.char_field})"
-
 """
+from uuid import uuid4
 from django.db import models
 from django.core.exceptions import ValidationError
 # Create your models here.
 
+
+class Model(models.Model):
+    
+    id = models.UUIDField(
+        default= uuid4,
+        primary_key= True,
+        unique= True,
+        null= False,
+        blank= False,
+        verbose_name= "ID",        
+    )
+    
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name= "Created At"
+    )
+    
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name= "Updated At"
+    )
+
+
+    def clean(self):
+        super().clean()
+
+        # if condition:
+            # raise ValidationError({"field_name": "Error Message."})
+    
+    def save(self, *args, **kwargs):
+        
+        # Do some changes if required
+        # if self.char_field:
+        #     self.char_field = self.char_field.capitalize()
+
+        super().save(*args, **kwargs)
+    
+    def __str__(self) -> str:
+        return str(self.id)
+    
+    class Meta:
+        verbose_name = "Model"
+        verbose_name_plural = "Models"
+        ordering = ["-created_at",]

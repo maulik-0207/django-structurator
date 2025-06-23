@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "django-structurator"
-version = "1.1.0"
-description = "An open-source CLI tool to rapidly generate Django projects and apps with a well-structured folder and configuration setup."
+version = "1.1.1"
+description = "A lightweight CLI tool that helps you create Django projects and apps with a clean, scalable architecture—without boilerplate or repetitive setup."
 readme = "docs/README.md"
 requires-python = ">=3.8"
 authors = [

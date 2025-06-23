@@ -15,7 +15,7 @@ import os
 {% if env == 'django-environ' %}import environ{% elif env == 'python-dotenv' %}from dotenv import load_dotenv{% endif %}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent # point to config/ folder
 TEMPLATE_DIR = os.path.join(BASE_DIR.parent, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR.parent, 'static')
 MEDIA_DIR = os.path.join(BASE_DIR.parent, 'media')

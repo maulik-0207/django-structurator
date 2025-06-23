@@ -9,9 +9,7 @@ The `{{ project_name }}` project is designed to ensure scalability, maintainabil
 ├── docs/                     # Documentation files
 │   ├── ARCHITECTURE.md       # Project folder architecture guide
 │   ├── CHANGELOG.md          # Change log for the project
-│   ├── README.md             # Main documentation file
-│   ├── TROUBLESHOOTING.md    # Common issues and solutions
-│   └── USAGE.md              # Instructions on using the project
+│   └── README.md             # Main documentation file
 │
 ├── local_db/                 # Local SQLite database for development
 │   └── db.sqlite3
@@ -38,7 +36,7 @@ The `{{ project_name }}` project is designed to ensure scalability, maintainabil
 │   │   │   └── production.py # Production environment settings
 │   │   ├── __init__.py
 │   │   ├── .env              # Environment variables (in config directory)
-│   │   ├── .env.example      # Example env file (in config directory)e
+│   │   ├── .env.example      # Example env file (in config directory)
 │   │   ├── asgi.py           # ASGI configuration
 │   │   ├── urls.py           # URL configuration
 │   │   └── wsgi.py           # WSGI configuration
