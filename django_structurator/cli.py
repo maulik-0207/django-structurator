@@ -1,20 +1,24 @@
+from importlib.metadata import version, PackageNotFoundError
 from django_structurator.commands.startproject import startproject
 from django_structurator.commands.startapp import startapp
-import pkg_resources
 
 def main():
     import argparse
     import sys
 
     parser = argparse.ArgumentParser(
-        description="An open-source CLI tool to rapidly generate Django projects and apps with a well-structured folder and configuration setup.",
+        description="A lightweight CLI tool that helps you create Django projects and apps with a clean, scalable architecture—without boilerplate or repetitive setup.",
     )
-
+    
+    try:
+        django_structurator_version = version("django_structurator")
+    except PackageNotFoundError:
+        django_structurator_version = "unknown" 
     # Add a version option
     parser.add_argument(
         "-v", "--version",
         action="version",
-        version=f"Django Structurator CLI {pkg_resources.get_distribution('django_structurator').version}",
+        version=f"Django Structurator CLI {django_structurator_version}",
         help="Show the version of the Django Structurator CLI and exit."
     )
 

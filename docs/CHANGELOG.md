@@ -15,6 +15,25 @@ All notable changes to the `django-structurator` project will be documented in t
 
 ---
 
+## [1.2.0] - 2025-07-21
+
+### Added
+- Added better content into `README.md` file for project setup. 
+- Added option for use of `Custom Django Logger` while porject creation.
+- Started using logger instead of print in send_mail() of helpers.py in common folder.
+
+### Changed
+- Made `DISALLOWED_PROJECT_NAMES` list empty.
+- Changed default content of some template files.
+
+### Fixed
+- Fixed issues with `Celery` implementation.
+
+### Fixed
+- Fixed issue with `pkg_resources` by replacing it with `importlib`.
+
+---
+
 ## [1.1.1] - 2025-06-23
 
 ### Changed

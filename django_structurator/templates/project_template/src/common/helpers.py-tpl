@@ -1,8 +1,10 @@
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
+import logging
 from django.conf import settings
 from django.utils.html import strip_tags
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
 
+logger = logging.getLogger("django")
 
 # use like this: from common.helpers import send_email
 def send_email(subject: str, ctx: dict[str,any], template_path: str, recipient_list: list[str], attachment_list: list[dict] = []) -> int:
@@ -32,5 +34,5 @@ def send_email(subject: str, ctx: dict[str,any], template_path: str, recipient_l
         result = message.send()
         return result  # Returns the number of successfully sent emails
     except Exception as e:
-        print(f"Error while sending email: {e}")
+        logger.error(f"Error while sending email (Sub: {subject}, template: {template_path}, Recipient List: {recipient_list}): {e}", exc_info=True)
         return 0

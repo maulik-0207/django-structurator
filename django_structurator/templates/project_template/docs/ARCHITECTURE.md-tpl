@@ -4,7 +4,7 @@ The `{{ project_name }}` project is designed to ensure scalability, maintainabil
 
 ## Project Directory Structure
 ```
-{{ project_name }}/ 
+test/ 
 │
 ├── docs/                     # Documentation files
 │   ├── ARCHITECTURE.md       # Project folder architecture guide
@@ -14,6 +14,13 @@ The `{{ project_name }}` project is designed to ensure scalability, maintainabil
 ├── local_db/                 # Local SQLite database for development
 │   └── db.sqlite3
 │
+├── logs/                     # Every level Log files will be here
+│   ├── critical.log      
+│   ├── debug.log          
+│   ├── error.log          
+│   ├── info.log          
+│   └── warning.log             
+|
 ├── requirements/             # Dependency management
 │   ├── base.txt              # Core dependencies
 │   ├── development.txt       # Development-specific dependencies
@@ -38,6 +45,7 @@ The `{{ project_name }}` project is designed to ensure scalability, maintainabil
 │   │   ├── .env              # Environment variables (in config directory)
 │   │   ├── .env.example      # Example env file (in config directory)
 │   │   ├── asgi.py           # ASGI configuration
+│   │   ├── celery.py         # Celery configuration file if used
 │   │   ├── urls.py           # URL configuration
 │   │   └── wsgi.py           # WSGI configuration
 │   │

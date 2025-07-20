@@ -5,7 +5,7 @@ from celery import Celery
 # Set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.development')
 
-app = Celery('{{project_name}}')
+app = Celery('config')
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
@@ -19,9 +19,8 @@ app.autodiscover_tasks()
 # app.conf.beat_schedule = {
 #     #Scheduler Name
 #     'seller-payment': {
-#         # Task Name (Name Specified in Decorator)
-#         'task': 'seller_payment',  
-#         # Schedule      
-#         'schedule': 420.0, # 7 minutes
+#         'task': 'seller_payment', # Task Name (Name Specified in Decorator)  
+#         'schedule': 420.0, # Run in every 7 minutes
 #     },
 # }  
+ 
