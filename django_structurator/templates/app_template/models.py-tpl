@@ -1,25 +1,4 @@
 """
-    char_field = models.CharField(
-        max_length=255,  # Maximum length for the field
-        unique=True,  # Ensures uniqueness at the database level
-        null=False,  # Allows NULL in the database
-        blank=False,  # Allows empty values in forms
-        default="",  # Default value for the field
-        help_text="A short description for the field.",  # Provides additional information for forms
-        validators=[],
-        verbose_name="Character Field",  # Human-readable name for the field
-        error_messages= {
-           "unique":"Username is not available.",
-           "max_length":"Username is too long, Max - 30."
-        },
-    )
-"""
-from uuid import uuid4
-from django.db import models
-from django.core.exceptions import ValidationError
-# Create your models here.
-
-
 class Model(models.Model):
     
     id = models.UUIDField(
@@ -63,3 +42,9 @@ class Model(models.Model):
         verbose_name = "Model"
         verbose_name_plural = "Models"
         ordering = ["-created_at",]
+"""
+from uuid import uuid4
+from django.db import models
+from django.core.exceptions import ValidationError
+# Create your models here.
+

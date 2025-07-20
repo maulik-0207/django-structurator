@@ -11,7 +11,7 @@ PROJECT_TEMPLATE_DIR  = TEMPLATES_DIR / "project_template"
 # Settings for project 
 PROJECT_NAME_PATTERN = r'^[a-zA-Z][a-zA-Z0-9_]*$'
 INVALID_PROJECT_NAME_MESSAGE = "It must start with a letter, and contain only letters, numbers, and underscores."
-DISALLOWED_PROJECT_NAMES = ('django', 'admin', 'config', 'settings', 'static', 'media')
+DISALLOWED_PROJECT_NAMES = []
 
 ENV_CHOICES = ('django-environ', 'python-dotenv', 'no_env')
 DEFAULT_ENV = 'django-environ'
@@ -28,7 +28,8 @@ DJANGO_PROJECT_FEATURES = {
     'Redis cache/message broker': 'use_redis',
     'Django Rest Framework (DRF)': 'use_drf',
     'Django Cors Headers': 'use_cors',
-    'Django Jazzmin for Admin Panel skins': 'use_jazzmin'
+    'Django Jazzmin for Admin Panel skins': 'use_jazzmin',
+    'Custom Logger Configurations': 'use_logger'
 }
 
 

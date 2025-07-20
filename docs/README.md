@@ -5,26 +5,26 @@
 
 🚀 **django-structurator** is a lightweight CLI tool that helps you create Django projects and apps with a clean, scalable architecture—without boilerplate or repetitive setup.
 
-No dependencies. No fluff. Just Python `input()` for fast, interactive prompts.
+No extra dependencies. No bloated templates. Just a clean, prompt-driven workflow.
 
 ---
 
-## ✅ What It Does
+## ⚙️ Features
 
-- 📂 Create Django projects with a scalable folder structure.
-- ⚙️ Quickly generate Django apps with optional files (forms, signals, validators, API support, etc.).
-- 🔧 Customize project setup with advanced features like:
-  - Django Rest Framework (DRF)
+- 📁 **Scalable Folder Structure** – Consistent architecture for better maintainability.
+- 🧩 **Modular App Generation** – Create Django apps with optional files: `forms`, `signals`, `validators`, `tasks`, and more.
+- 🔌 **Optional Add-ons**:
+  - Django REST Framework (DRF)
   - Django Debug Toolbar
-  - Celery
-  - Redis cache
-  - SMTP email config
-  - Jazzmin admin
-- 🎛️ Auto-generate essential files like `.env.example` and `.gitignore`.
+  - Celery + Redis
+  - SMTP Email Configuration
+  - Jazzmin Admin UI
+  - Custom Django Logger
+- 📄 Auto-generates essentials: `.env.example`, `.gitignore`, `requirements/`, and more.
 
 ---
 
-## 🚀 Installation
+## 📦 Installation
 
 ```bash
 pip install django-structurator
@@ -34,119 +34,131 @@ pip install django-structurator
 
 ## ⚡ Usage
 
-### Create a Django Project
+### 📂 Create a New Django Project
 
 ```bash
 django-str startproject
 ```
 
-Follow the prompts to:
-- Name your project
-- Choose a database: SQLite, PostgreSQL, MySQL
-- Pick `.env` configuration (django-environ, python-dotenv)
-- Add optional features (DRF, Celery, Redis, Debug Toolbar, etc.)
+Interactive CLI will ask:
+- Project name and path
+- Database: SQLite / PostgreSQL / MySQL
+- `.env` management: `django-environ` / `python-dotenv`
+- Optional integrations (Debug Toolbar, DRF, Celery, Redis, Logger etc.)
 
-✅ **Example Output:**
-```
->> django-str startproject
-Enter project name: test
-Enter project path (default: E:\Django\test): 
-
-Select database
-1. postgresql
-2. mysql
-3. sqlite
-Select an option (1-3): 3
-
-🔧 Optional Project Features:
-Do you want to use Django Debug Toolbar? (y/n) [default: n]: y
-....
-
-🚀 Project Configuration Summary:
-========================================
-project_name: test
-project_path: E:\Django\test
-database: sqlite
-....
-========================================
-
-Do you want to proceed with project creation? (y/n) [default: y]: y
-...
-Django project 'test' created successfully at E:\Django\test
-```
-
----
-
-### Create a Django App
+### 🧱 Create a New Django App
 
 ```bash
 django-str startapp
 ```
 
-Follow the prompts to:
-- Name your app
-- Add files like: `forms.py`, `signals.py`, `validators.py`
+CLI will prompt for:
+- App name
+- Optional modules: `forms.py`, `signals.py`, `validators.py`
 - Include optional features like:
   - Template tags/filters
   - Static and templates folders
   - API folder structure (DRF)
-
-✅ **Example Output:**
-```
->> django-str startapp    
-Enter App name: main
-
-🔧 Optional App Features:
-Do you want to use validators.py? (y/n) [default: n]: y
-....
-
-🚀 App Configuration Summary:
-app_dir: ...\test\src\apps
-app_name: main
-app_path: ...\test\src\apps\main
-use_validators_py: True
-....
-
-Do you want to proceed with app creation? (y/n) [default: y]: y
-
-🎉 Django app 'main' created successfully!
-```
 
 ---
 
 ## 🏗️ Example Project Structure
 
 ```plaintext
-my_project/
-├── docs/
-├── local_db/
-├── requirements/
-├── src/
-│   ├── apps/
-│   │   ├── blog/
-│   │   │   ├── api/v1/
-│   │   │   ├── migrations/
-│   │   │   ├── templatetags/
-│   │   │   ├── admin.py
-│   │   │   ├── apps.py
-│   │   │   ├── forms.py
-│   │   │   ├── models.py
-│   │   │   ├── signals.py
-│   │   │   ├── tasks.py
-│   │   │   ├── validators.py
-│   │   │   └── views.py
-│   │   └── ...
-│   ├── common/
-│   ├── config/
-│   │   ├── settings/
-│   │   ├── urls.py
-│   │   ├── wsgi.py
-│   │   └── asgi.py
-│   ├── media/
-│   ├── static/
-│   ├── templates/
-│   └── manage.py
-└── .gitignore
+test/ 
+│
+├── docs/                     # Documentation files
+│   ├── ARCHITECTURE.md       # Project folder architecture guide
+│   ├── CHANGELOG.md          # Change log for the project
+│   └── README.md             # Main documentation file
+│
+├── local_db/                 # Local SQLite database for development
+│   └── db.sqlite3
+│
+├── logs/                     # Every level Log files will be here
+│   ├── critical.log      
+│   ├── debug.log          
+│   ├── error.log          
+│   ├── info.log          
+│   └── warning.log             
+|
+├── requirements/             # Dependency management
+│   ├── base.txt              # Core dependencies
+│   ├── development.txt       # Development-specific dependencies
+│   ├── production.txt        # Production-specific dependencies
+│   └── test.txt              # Testing dependencies
+│
+├── src/                      # Main source code folder
+│   ├── apps/                 # All Django apps
+|   |   ├── app-1/                    # Example Django app
+|   |   │   │
+|   |   │   ├── api/                  # API for app-1
+|   |   │   │   ├── v1/               # Version 1 of the API
+|   |   │   │   │   ├── __init__.py
+|   |   │   │   │   ├── serializers.py # Serializers for API data
+|   |   │   │   │   ├── urls.py        # API URL patterns
+|   |   │   │   │   └── views.py       # API views
+|   |   │   │   └── __init__.py
+|   |   │   │
+|   |   │   ├── migrations/           # Database migrations
+|   |   │   │   └── __init__.py
+|   |   │   │
+|   |   │   ├── templatetags/         # Custom template tags and filters
+|   |   │   │   ├── __init__.py
+|   |   │   │   ├── example_filter.py # Custom filter example
+|   |   │   │   └── example_tag.py    # Custom tag example
+|   |   │   │
+|   |   │   ├── __init__.py
+|   |   │   ├── admin.py              # Admin site configuration
+|   |   │   ├── apps.py               # App configuration
+|   |   │   ├── forms.py              # App-specific forms (optional)
+|   |   │   ├── models.py             # App models
+|   |   │   ├── signals.py            # Signal handlers (optional)
+|   |   │   ├── tasks.py              # Celery tasks (optional)
+|   |   │   ├── tests.py              # Unit tests
+|   |   │   ├── urls.py               # App-specific URL patterns
+|   |   │   ├── validators.py         # Custom validators (optional)
+|   |   │   └── views.py              # App views
+|   |   │
+|   |   ├── app-2/                    # Another app
+|   |   ├── app-3/
+|   |   ├── ...
+|   |   └── app-4/
+│   │
+│   ├── common/               # Shared utilities, constants, and helpers
+│   │   ├── __init__.py
+│   │   ├── constants.py      # Commonly used constants
+│   │   └── helpers.py        # Utility functions
+│   │
+│   ├── config/               # Project configuration
+│   │   ├── settings/         # Environment-specific settings
+│   │   │   ├── __init__.py
+│   │   │   ├── base.py       # Base settings
+│   │   │   ├── development.py # Development environment settings
+│   │   │   └── production.py # Production environment settings
+│   │   ├── __init__.py
+│   │   ├── .env              # Environment variables (in config directory)
+│   │   ├── .env.example      # Example env file (in config directory)
+│   │   ├── asgi.py           # ASGI configuration
+│   │   ├── celery.py         # Celery configuration file if used
+│   │   ├── urls.py           # URL configuration
+│   │   └── wsgi.py           # WSGI configuration
+│   │
+│   ├── media/                # Uploaded media files
+│   │
+│   ├── static/               # Static files
+│   │   ├── css/              # CSS files
+│   │   ├── js/               # JavaScript files
+│   │   └── images/           # Image files
+│   │       └── favicon.ico   # Favicon
+│   │
+│   ├── templates/            # HTML templates
+│   │   ├── base.html         # Base HTML template
+│   │   └── index.html        # Default landing page template
+│   │
+│   └── manage.py             # Django's management script
+│
+└── .gitignore                # Git ignore file
 ```
 
 ---
@@ -155,6 +167,16 @@ my_project/
 
 - Python 3.8+
 - Django 3.2+
+
+---
+
+## 🧠 Why Use It?
+
+- 🔥 Save time and skip repetitive setup
+
+- 🧼 Enforce consistency across teams
+
+- ⚡ Fast, interactive, zero-bloat generator
 
 ---
 
@@ -168,13 +190,3 @@ MIT License - See the [LICENSE](https://github.com/maulik-0207/django-structurat
 
 - GitHub Repo: [maulik-0207/django-structurator](https://github.com/maulik-0207/django-structurator)
 - PyPI Package: [django-structurator](https://pypi.org/project/django-structurator/)
-
-
----
-
-## Why Use django-structurator?
-
-🔥 **Save time**, avoid repetitive setup  
-🧹 Clean, maintainable architecture  
-⚡ Lightweight, no external dependencies  
-🛠️ Customizable project and app scaffolding  

@@ -1,8 +1,8 @@
 import os
 import re
 import django
-import pkg_resources
 from sys import platform
+from importlib.metadata import version, PackageNotFoundError
 
 from django.core.checks.security.base import SECRET_KEY_INSECURE_PREFIX
 from django.core.management.utils import get_random_secret_key
@@ -186,7 +186,10 @@ class DjangoProjectStructurator(BaseStructurator):
         self._get_project_configurations()
         
         self.config['django_docs_version'] = django.get_version()
-        self.config['django_structurator_version'] = pkg_resources.get_distribution("django_structurator").version
+        try:
+            self.config['django_structurator_version'] = version("django_structurator")
+        except PackageNotFoundError:
+            self.config['django_structurator_version'] = "unknown"
         
         self.config['secret_key'] = SECRET_KEY_INSECURE_PREFIX + get_random_secret_key()
         
@@ -211,6 +214,9 @@ class DjangoProjectStructurator(BaseStructurator):
                 
             if config.get("use_celery", False) == True:
                 PROJECT_STRUCTURE['src']['config'][None].append("celery.py")
+                
+            if config.get("use_logger", False) == True:
+                PROJECT_STRUCTURE['logs'] = []
                 
             folder_generator = FolderGenerator(
                 self.config,

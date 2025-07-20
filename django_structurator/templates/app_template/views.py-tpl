@@ -5,6 +5,6 @@ from django.http import HttpResponse
 def example_view(request):
     
     ctx = {
-        "example_key": "example_value",
+        "title": "Page Title Here",
     }
     return render(request, "{{ app_name }}/example_template.html", context= ctx)
