@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/{{ django_docs_version }}/ref/settings/
 from pathlib import Path
 import os
 {% if env == 'django-environ' %}import environ{% elif env == 'python-dotenv' %}from dotenv import load_dotenv{% endif %}
+{% if use_logger %}import logging{% endif %}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent # point to config/ folder
@@ -203,6 +204,17 @@ CELERY_RESULT_SERIALIZER = 'json'{% endif %}
 
 
 {% if use_logger %}# Django Logger Configurations
+class LevelFilter(logging.Filter):
+    """
+    Filter logs by an exact level match (not >= like default behavior).
+    """
+    def __init__(self, level):
+        super().__init__()
+        self.level = logging._checkLevel(level)
+
+    def filter(self, record):
+        return record.levelno == self.level
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

@@ -15,6 +15,13 @@ All notable changes to the `django-structurator` project will be documented in t
 
 ---
 
+## [1.2.1] - 2025-07-24
+
+### Fixed
+- Fixed Error of `src/config/settings/base.py` by adding LevelFilter class.
+
+---
+
 ## [1.2.0] - 2025-07-21
 
 ### Added
@@ -28,8 +35,6 @@ All notable changes to the `django-structurator` project will be documented in t
 
 ### Fixed
 - Fixed issues with `Celery` implementation.
-
-### Fixed
 - Fixed issue with `pkg_resources` by replacing it with `importlib`.
 
 ---
