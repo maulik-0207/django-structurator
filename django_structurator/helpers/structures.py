@@ -82,6 +82,7 @@ APP_STRUCTURE = {
         'apps.py',
         'models.py',
         'tests.py',
+        'validators.py',
         'views.py',
         'urls.py',
     ],

@@ -8,9 +8,21 @@ https://docs.djangoproject.com/en/{{ django_docs_version }}/howto/deployment/wsg
 """
 
 import os
+from pathlib import Path
+{% if env == 'django-environ' %}import environ{% elif env == 'python-dotenv' %}from dotenv import load_dotenv{% endif %}
+
+BASE_DIR = Path(__file__).resolve().parent
+
+{% if env == 'django-environ' %}env = environ.Env()
+environ.Env.read_env(env_file=BASE_DIR / '.env')
+{% elif env == 'python-dotenv' %}
+load_dotenv(BASE_DIR / '.env')
+{% endif %}
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.development')
-
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE",
+    os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.development")
+)
 application = get_wsgi_application()

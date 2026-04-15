@@ -1,4 +1,4 @@
-from typing import Callable, List, Optional
+from typing import Callable, Sequence, Optional
 
 class BaseStructurator:
     
@@ -9,7 +9,7 @@ class BaseStructurator:
         question: str, 
         default: Optional[str]= None, 
         validator: Optional[Callable[[str], str]] = None, 
-        options: Optional[List[str]] = None
+        options: Optional[Sequence[str]] = None
     ) -> str:
         
         """Ask a question and return the user's validated answer."""

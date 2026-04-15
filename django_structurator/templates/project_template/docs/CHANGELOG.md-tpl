@@ -44,3 +44,4 @@ All notable changes to the `{{ project_name }}` project will be documented in th
 - Basic folder structure for Django project, including `src/`, `apps/`, and `config/` directories.
 - Support for environment-specific settings (`base.py`, `development.py`, `production.py`).
 - Included `media/`, `static/`, and `templates/` directories for file organization.
+- Added strict `AI_CONTEXT.md` and `ARCHITECTURE.md` documentation to assist AI Agents with boundary logic.

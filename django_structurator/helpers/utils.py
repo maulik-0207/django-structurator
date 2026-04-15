@@ -1,4 +1,5 @@
 import os
+import sys
 import shutil
 from django.template import Context, Template
 from django.conf import settings
@@ -88,15 +89,15 @@ class FolderGenerator:
                 file.write(rendered_content)
 
         except Exception as e:
-            print(f"An error occured during creation of file : {file_path}")
+            print(f"An error occurred during creation of file : {file_path}")
             print(f"Error: {e}\n")
+            sys.exit(1)
     
     def _create_directories(self, directories: list) -> None:
         """This function will create all directories provided in the list. 
         """
         for directory in directories:
-            if not os.path.exists(directory):
-                os.mkdir(directory)
+            os.makedirs(directory, exist_ok=True)
     
     def _create_files(self, files: dict) -> None:
         """This function will take file path in key and template path in value.
@@ -110,7 +111,7 @@ class FolderGenerator:
             elif temp_path and not str(temp_path).endswith("-tpl"):
                 shutil.copy(temp_path, file_path)
             else:
-                with open(file_path, 'w') as file:
+                with open(file_path, 'w', encoding='utf-8') as file:
                     file.write("")
     
     def generate(self) -> None:

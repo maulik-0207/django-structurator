@@ -1,6 +1,8 @@
 import os
 import re
 import sys
+import copy
+import keyword
 from django_structurator.commands.base import BaseStructurator
 from django_structurator.helpers.structures import APP_STRUCTURE
 from django_structurator.helpers.utils import FolderGenerator
@@ -11,6 +13,7 @@ from django_structurator.settings import (
     DISALLOWED_APP_NAMES,
     DJANGO_APP_FEATURES
 )
+from django_structurator.helpers.colors import Colors
 
 
 class DjangoAppStructurator(BaseStructurator):
@@ -18,8 +21,9 @@ class DjangoAppStructurator(BaseStructurator):
     """Class to create Django App with user choices and best folder structure.
     """
     
-    def __init__(self) -> None:
+    def __init__(self, kwargs=None) -> None:
         self.config = {}
+        self.kwargs = kwargs or {}
 
     def _check_project_path(self) -> None:
         """Function to check that command is running from project root directory so it can find apps directory easily.
@@ -43,7 +47,6 @@ class DjangoAppStructurator(BaseStructurator):
             )
         
         # Check against reserved keywords and disallowed names
-        import keyword
         if name in keyword.kwlist:
             raise ValueError(f"Invalid app name. '{name}' is a reserved Python keyword.")
         
@@ -65,6 +68,18 @@ class DjangoAppStructurator(BaseStructurator):
         app_dir = os.path.join(os.getcwd(), 'apps')
         self.config['app_dir'] = app_dir
         
+        if self.kwargs and self.kwargs.get('no_que'):
+            app_name = self.kwargs.get('name')
+            if not app_name:
+                print("Error: --name is required when using --no-que")
+                sys.exit(1)
+            self.config['app_name'] = self._app_name_validator(app_name)
+            self.config['app_path'] = os.path.join(self.config.get('app_dir'), self.config['app_name'])
+            
+            for feature, feature_key in DJANGO_APP_FEATURES.items():
+                self.config[feature_key] = self.kwargs.get(feature_key, False)
+            return
+
         app_name = super()._prompt(
             "Enter App name", 
             validator= self._app_name_validator
@@ -87,19 +102,19 @@ class DjangoAppStructurator(BaseStructurator):
         
         app_name = self.config.get("app_name")
         
-        print("\n🌟 Next Steps for Your Django Application:")
+        print(f"\n{Colors.OKGREEN}{Colors.BOLD}🌟 Next Steps for Your Django Application:{Colors.ENDC}")
         step_no = 1
-        print(f"\n{step_no}. Add the app to your INSTALLED_APPS in `base.py` of settings/ inside config/:")
-        print(f"   'apps.{app_name}',")
+        print(f"\n{Colors.OKCYAN}{step_no}. Add the app to your INSTALLED_APPS in `base.py` of settings/ inside config/:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}'apps.{app_name}',{Colors.ENDC}")
         step_no += 1
         
-        print(f"\n{step_no}. Add the app's urls to project level urls.py:")
-        print(f"   path('{app_name}/',include('apps.{app_name}.urls')),")
+        print(f"\n{Colors.OKCYAN}{step_no}. Add the app's urls to project level urls.py:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}path('{app_name}/',include('apps.{app_name}.urls')),{Colors.ENDC}")
         step_no += 1
         
         if self.config.get("use_api_drf"):
-            print(f"\n{step_no}. Add API URL to your project's `urls.py`:")
-            print(f"   path('api/v1/{app_name}/', include('apps.{app_name}.api.v1.urls')),")
+            print(f"\n{Colors.OKCYAN}{step_no}. Add API URL to your project's `urls.py`:{Colors.ENDC}")
+            print(f"   {Colors.WARNING}path('api/v1/{app_name}/', include('apps.{app_name}.api.v1.urls')),{Colors.ENDC}")
             step_no += 1
     
     def generate_app(self) -> None:
@@ -114,48 +129,50 @@ class DjangoAppStructurator(BaseStructurator):
             print(f"{key}: {value}")
         
         print("")            
-        confirm = super()._yes_no_prompt("Do you want to proceed with app creation?", default=True)
+        if self.kwargs and self.kwargs.get('no_que'):
+            confirm = True
+        else:
+            confirm = super()._yes_no_prompt("Do you want to proceed with app creation?", default=True)
         if confirm:
+            import copy
+            app_structure = copy.deepcopy(APP_STRUCTURE)
             
-            if config.get("use_validators_py") == True:
-                APP_STRUCTURE[None].append("validators.py")
+            if config.get("use_forms"):
+                app_structure[None].append("forms.py")
             
-            if config.get("use_forms_py") == True:
-                APP_STRUCTURE[None].append("forms.py")
+            if config.get("use_signals"):
+                app_structure[None].append("signals.py")
             
-            if config.get("use_signals_py") == True:
-                APP_STRUCTURE[None].append("signals.py")
+            if config.get("use_tasks"):
+                app_structure[None].append("tasks.py")
             
-            if config.get("use_tasks_py") == True:
-                APP_STRUCTURE[None].append("tasks.py")
+            if config.get("use_app_static_template"):
+                app_structure['templates'] = {str(config['app_name']): []}
+                app_structure['static'] = {str(config['app_name']): {'images': [], 'css': [], 'js': []}}
             
-            if config.get("use_app_static_template") == True:
-                APP_STRUCTURE['templates'] = {str(config['app_name']): []}
-                APP_STRUCTURE['static'] = {str(config['app_name']): {'images': [], 'css': [], 'js': []}}
-            
-            if config.get("use_template_tags") == True:
-                APP_STRUCTURE['templatetags'] = ['__init__.py', 'example_filter.py', 'example_tag.py']
+            if config.get("use_template_tags"):
+                app_structure['templatetags'] = ['__init__.py', 'example_filter.py', 'example_tag.py']
                 
-            if config.get("use_api_drf") == True:
-                APP_STRUCTURE['api'] = {
+            if config.get("use_api_drf"):
+                app_structure['api'] = {
                     None: ['__init__.py'],
                     'v1': ['__init__.py', 'serializers.py', 'urls.py', 'views.py']
                 }
                    
             folder_generator = FolderGenerator(
                 self.config,
-                APP_STRUCTURE,
+                app_structure,
                 APP_TEMPLATES_DIR,
             )
             
             folder_generator.generate()
             
-            print(f"\n🎉 Django app '{config['app_name']}' created successfully!")
+            print(f"\n{Colors.OKGREEN}🎉 Django app '{config['app_name']}' created successfully!{Colors.ENDC}")
             self.print_success_help()
         else:
             print("App creation cancelled.")
 
         
-def startapp():
-    app_structurator = DjangoAppStructurator()
+def startapp(kwargs=None):
+    app_structurator = DjangoAppStructurator(kwargs)
     app_structurator.generate_app()

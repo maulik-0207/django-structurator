@@ -1,0 +1,85 @@
+# AI Context Guide for Django Structurator Projects
+
+This document is specifically designed for AI coding assistants (Cursor, Claude, Antigravity, etc.) to understand and work efficiently with this project.
+
+## Project Philosophy
+
+* Modular Django architecture
+* App-based separation of concerns
+* Scalable and production-ready structure
+* Minimal coupling between apps
+
+---
+
+## How to Add New Features
+
+### Example: Adding a new feature (e.g., "User Profile")
+
+1. Create or use an existing app:
+
+   * Location: `src/apps/users/`
+
+2. Add model:
+
+   * File: `models.py`
+
+3. Add API (if needed):
+
+   * `api/v1/serializers.py`
+   * `api/v1/views.py`
+   * `api/v1/urls.py`
+
+4. Register URLs:
+
+   * Include app URLs in `config/urls.py`
+
+5. Add business logic:
+
+   * Inside app (NOT global)
+
+---
+
+## Folder Responsibilities
+
+* `src/apps/` → All domain logic
+* `src/common/` → Shared utilities
+* `src/config/` → Settings & configuration
+* `docs/` → Documentation
+
+---
+
+## Strict Rules
+
+* NEVER place app logic inside `config/`
+* NEVER mix multiple domains in one app
+* ALWAYS keep API versioned (`v1`, `v2`, etc.)
+* ALWAYS use serializers for API responses
+* NEVER build "Fat Views". Business logic must go into Models (Fat Models) or App Services (`services.py`).
+* ALWAYS inherit new models from the scaffolded Abstract `TimeStampedUUIDModel` internally unless explicitly told otherwise.
+* WHEN generating utilities (like sending email/push notifications), always inspect `src/common/helpers.py` first to reuse code.
+
+---
+
+## Common Tasks
+
+### Create a new app:
+
+```bash
+django-str startapp --no-que --name <app_name> --use-signals --use-tasks --use-api-drf 
+```
+
+### Add API:
+
+* Create `api/v1/` inside app
+
+### Add Celery task:
+
+* Use `tasks.py` inside app
+
+---
+
+## Notes for AI Assistants
+
+* Prefer modifying existing apps over creating new ones unless necessary
+* Follow existing patterns in similar apps
+* Keep code consistent with current structure
