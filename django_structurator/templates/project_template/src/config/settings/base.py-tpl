@@ -31,12 +31,12 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/{{ django_docs_version }}/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = {% if env != 'no_env' %}os.getenv("SECRET_KEY"){% else %}"{{secret_key}}"{% endif %}
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = str(os.getenv("ALLOWED_HOSTS")).split(",")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") if os.getenv("ALLOWED_HOSTS") else []
 
 
 # Application definition
@@ -52,13 +52,13 @@ INSTALLED_APPS = [
 
     {% if use_celery %}'django_celery_results',{% endif %}
     {% if use_drf %}'rest_framework',{% endif %}
-    {% if use_cors %}'corsheaders',{% endif %}
+    {% if use_drf %}'corsheaders',{% endif %}
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    {% if use_cors %}'corsheaders.middleware.CorsMiddleware',{% endif %}
+    {% if use_drf %}'corsheaders.middleware.CorsMiddleware',{% endif %}
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -94,25 +94,27 @@ WSGI_APPLICATION = 'config.wsgi.application'
 {% if database == 'postgresql' %}DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': {% if env != 'no_env' %}os.getenv("DB_NAME"){% else %}""{% endif %},
-        'USER': {% if env != 'no_env' %}os.getenv("DB_USER"){% else %}""{% endif %},
-        'PASSWORD': {% if env != 'no_env' %}os.getenv("DB_PASSWORD"){% else %}""{% endif %},
-        'HOST': {% if env != 'no_env' %}os.getenv("DB_HOST"){% else %}""{% endif %},
-        'PORT': {% if env != 'no_env' %}os.getenv("DB_PORT"){% else %}""{% endif %},
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
     }
 }{% elif database == 'mysql' %}DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': {% if env != 'no_env' %}os.getenv("DB_NAME"){% else %}""{% endif %},
-        'USER': {% if env != 'no_env' %}os.getenv("DB_USER"){% else %}""{% endif %},
-        'PASSWORD': {% if env != 'no_env' %}os.getenv("DB_PASSWORD"){% else %}""{% endif %},
-        'HOST': {% if env != 'no_env' %}os.getenv("DB_HOST"){% else %}""{% endif %},
-        'PORT': {% if env != 'no_env' %}os.getenv("DB_PORT"){% else %}""{% endif %},
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT"),
     }
-}{% else %}DATABASES = {
+}{% else %}LOCAL_DB_DIR = os.path.join(BASE_DIR.parent.parent, 'local_db')
+os.makedirs(LOCAL_DB_DIR, exist_ok=True)
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR.parent.parent, 'local_db', 'db.sqlite3'),
+        'NAME': os.path.join(LOCAL_DB_DIR, 'db.sqlite3'),
     }
 }{% endif %}
 
@@ -147,13 +149,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-{% if use_password_hashers %}PASSWORD_HASHERS = [
+PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
     'django.contrib.auth.hashers.BCryptPasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-]{% endif %}
+]
 
 # AUTH_USER_MODEL = "AppName.ModelName"
 
@@ -178,18 +180,13 @@ STATICFILES_DIRS = [STATIC_DIR,]
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = "/media/"
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/{{ django_docs_version }}/ref/settings/#default-auto-field
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 {% if use_smtp_email %}# Email SMTP Configurations
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = {% if env != 'no_env' %}os.getenv("EMAIL_HOST_USER"){% else %}""{% endif %}
-EMAIL_HOST_PASSWORD = {% if env != 'no_env' %}os.getenv("EMAIL_HOST_PASSWORD"){% else %}""{% endif %}{% endif %}
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD"){% endif %}
 
 {% if use_celery %}# Celery Configuration Options
 CELERY_TIMEZONE = "UTC"
@@ -214,6 +211,9 @@ class LevelFilter(logging.Filter):
 
     def filter(self, record):
         return record.levelno == self.level
+
+LOGS_DIR = os.path.join(BASE_DIR.parent.parent, 'logs')
+os.makedirs(LOGS_DIR, exist_ok=True)
 
 LOGGING = {
     'version': 1,
@@ -275,35 +275,35 @@ LOGGING = {
             'level': 'DEBUG',
             'filters': ['debug_filter', 'require_debug_true'],
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR.parent.parent, 'logs', 'debug.log'),
+            'filename': os.path.join(LOGS_DIR, 'debug.log'),
             'formatter': 'verbose',
         },
         'info_file': {
             'level': 'INFO',
             'filters': ['info_filter'],
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR.parent.parent, 'logs', 'info.log'),
+            'filename': os.path.join(LOGS_DIR, 'info.log'),
             'formatter': 'verbose',
         },
         'warning_file': {
             'level': 'WARNING',
             'filters': ['warning_filter'],
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR.parent.parent, 'logs', 'warning.log'),
+            'filename': os.path.join(LOGS_DIR, 'warning.log'),
             'formatter': 'verbose',
         },
         'error_file': {
             'level': 'ERROR',
             'filters': ['error_filter'],
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR.parent.parent, 'logs', 'error.log'),
+            'filename': os.path.join(LOGS_DIR, 'error.log'),
             'formatter': 'verbose',
         },
         'critical_file': {
             'level': 'CRITICAL',
             'filters': ['critical_filter'],
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR.parent.parent, 'logs', 'critical.log'),
+            'filename': os.path.join(LOGS_DIR, 'critical.log'),
             'formatter': 'verbose',
         },  
         'mail_admins': {

@@ -2,9 +2,22 @@ import os
 
 from celery import Celery
 
-# Set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.development')
+from pathlib import Path
+{% if env == 'django-environ' %}import environ{% elif env == 'python-dotenv' %}from dotenv import load_dotenv{% endif %}
 
+BASE_DIR = Path(__file__).resolve().parent
+
+{% if env == 'django-environ' %}env = environ.Env()
+environ.Env.read_env(env_file=BASE_DIR / '.env')
+{% elif env == 'python-dotenv' %}
+load_dotenv(BASE_DIR / '.env')
+{% endif %}
+
+# Set the default Django settings module for the 'celery' program.
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE",
+    os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.development")
+)
 app = Celery('config')
 
 # Using a string here means the worker doesn't have to serialize

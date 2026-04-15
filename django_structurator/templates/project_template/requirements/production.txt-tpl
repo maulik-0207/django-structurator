@@ -1,3 +1,4 @@
 # requirements that project needs in production environment
 
 -r base.txt
+gunicorn

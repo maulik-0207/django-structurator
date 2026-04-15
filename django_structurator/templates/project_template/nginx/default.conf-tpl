@@ -1,0 +1,33 @@
+upstream django_project {
+    server web:8000;
+}
+
+server {
+    listen 80;
+
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+    gzip_min_length 1000;
+
+    location / {
+        proxy_pass http://django_project;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_redirect off;
+
+        proxy_connect_timeout 60s;
+        proxy_read_timeout 60s;
+        proxy_send_timeout 60s;
+
+        client_max_body_size 100M;
+    }
+
+    location /static/ {
+        alias /app/src/static/;
+    }
+
+    location /media/ {
+        alias /app/src/media/;
+    }
+}

@@ -1,4 +1,6 @@
 """
+{% verbatim %}{% load example_filter %}{% endverbatim %}
+
 ---> Simple Filter <---
 @register.filter
 def to_uppercase(value): # Use -> {% verbatim %}{{ some_variable|to_uppercase }}{% endverbatim %}

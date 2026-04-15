@@ -1,0 +1,38 @@
+# Use an official Python runtime as a parent image
+FROM python:3.11-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    {% if database == 'postgresql' %}
+libpq-dev \
+    {% elif database == 'mysql' %}
+default-libmysqlclient-dev \
+    {% endif %}
+&& rm -rf /var/lib/apt/lists/*
+
+# Install python dependencies
+COPY ./requirements /app/requirements/
+RUN pip install --upgrade pip \
+    && pip install --no-cache-dir -r requirements/production.txt    
+
+# Copy project files
+COPY ./src /app/src/
+# Copy the .env file if it exists
+COPY src/config/.env* /app/src/config/
+
+# Set working directory to where manage.py is
+WORKDIR /app/src
+
+RUN useradd -m appuser && chown -R appuser:appuser /app
+
+USER appuser
+
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]

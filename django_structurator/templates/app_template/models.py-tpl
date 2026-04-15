@@ -1,26 +1,17 @@
 """
-class Model(models.Model):
-    
-    id = models.UUIDField(
-        default= uuid4,
-        primary_key= True,
-        unique= True,
-        null= False,
-        blank= False,
-        verbose_name= "ID",        
-    )
-    
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name= "Created At"
-    )
-    
-    updated_at = models.DateTimeField(
-        auto_now=True,
-        verbose_name= "Updated At"
-    )
+class TimeStampedUUIDModel(models.Model):
+    id = models.UUIDField(default=uuid4, primary_key=True, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
+
+    class Meta:
+        abstract = True
 
 
+class Model(TimeStampedUUIDModel):
+    
+    # field1 = models.CharField(max_length=255)
+    # field2 = models.TextField(blank=True, null=True)
     def clean(self):
         super().clean()
 

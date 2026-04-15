@@ -1,5 +1,8 @@
 import os
 import re
+import sys
+import copy
+import keyword
 import django
 from sys import platform
 from importlib.metadata import version, PackageNotFoundError
@@ -21,6 +24,7 @@ from django_structurator.settings import (
     DEFAULT_ENV,
     DJANGO_PROJECT_FEATURES
 )
+from django_structurator.helpers.colors import Colors
 
 
 class DjangoProjectStructurator(BaseStructurator):
@@ -28,8 +32,9 @@ class DjangoProjectStructurator(BaseStructurator):
     """Class to create Django Project with user choices and best folder structure.
     """
     
-    def __init__(self) -> None:
+    def __init__(self, kwargs=None) -> None:
         self.config = {}
+        self.kwargs = kwargs or {}
     
     def _project_name_validator(self, name: str) -> str:
         """Validator for Project Name.
@@ -43,7 +48,6 @@ class DjangoProjectStructurator(BaseStructurator):
             )
         
         # Check against reserved keywords
-        import keyword
         if name in keyword.kwlist:
             raise ValueError(f"Invalid project name. '{name}' is a reserved Python keyword.")
         
@@ -58,10 +62,13 @@ class DjangoProjectStructurator(BaseStructurator):
         
         # If path doesn't exist, ask to create
         if not os.path.exists(expanded_path):
-            create = super()._yes_no_prompt(
-                f"Path {expanded_path} does not exist. Do you want to create it?", 
-                default=True,
-            )
+            if self.kwargs and self.kwargs.get('no_que'):
+                create = True
+            else:
+                create = super()._yes_no_prompt(
+                    f"Path {expanded_path} does not exist. Do you want to create it?", 
+                    default=True,
+                )
             if create:
                 try:
                     os.makedirs(expanded_path)
@@ -76,7 +83,23 @@ class DjangoProjectStructurator(BaseStructurator):
         
         """This function will take all user choices and store it into class level config variable.
         """
-        
+        if self.kwargs and self.kwargs.get('no_que'):
+            project_name = self.kwargs.get('name')
+            if not project_name:
+                print("Error: --name is required when using --no-que")
+                sys.exit(1)
+            self.config['project_name'] = self._project_name_validator(project_name)
+            
+            project_path = self.kwargs.get('path') or os.path.join(os.getcwd())
+            self.config['project_path'] = self._path_validator(project_path)
+            
+            self.config['database'] = self.kwargs.get('db') or DEFAULT_DATABASE
+            self.config['env'] = self.kwargs.get('env') or DEFAULT_ENV
+            
+            for feature, feature_key in DJANGO_PROJECT_FEATURES.items():
+                self.config[feature_key] = self.kwargs.get(feature_key, False)
+            return
+
         project_name = super()._prompt(
             "Enter project name",
             validator= self._project_name_validator
@@ -115,58 +138,58 @@ class DjangoProjectStructurator(BaseStructurator):
     def _print_windows_success_help(self) -> None:
         """This function will print next steps for Windows user after creation of new Django Project.
         """
-        print("\n🌟 Next Steps for Your Django Project:")
+        print(f"\n{Colors.OKGREEN}{Colors.BOLD}🌟 Next Steps for Your Django Project:{Colors.ENDC}")
         
-        print("\n1. Create a Virtual Environment:")
-        print(f"   cd {self.config['project_path']}")
-        print("   python -m venv venv")
+        print(f"\n{Colors.OKCYAN}1. Create a Virtual Environment:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}cd {self.config['project_path']}{Colors.ENDC}")
+        print(f"   {Colors.WARNING}python -m venv venv{Colors.ENDC}")
         
-        print("\n2. Activate the Virtual Environment:")
-        print("   venv\\Scripts\\activate")
+        print(f"\n{Colors.OKCYAN}2. Activate the Virtual Environment:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}venv\\Scripts\\activate{Colors.ENDC}")
         
-        print("\n3. Install Project Dependencies:")
-        print("   pip install -r .\\requirements\development.txt")
+        print(f"\n{Colors.OKCYAN}3. Install Project Dependencies:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}pip install -r .\\requirements\\development.txt{Colors.ENDC}")
         
-        print("\n4. Configure Database:")
-        print("   Update DATABASE configuration & .env with your credentials")
+        print(f"\n{Colors.OKCYAN}4. Configure Database:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}Update DATABASE configuration & .env with your credentials{Colors.ENDC}")
         
-        print("\n5. Run Database Migrations:")
-        print("   cd src")
-        print("   python manage.py migrate")
+        print(f"\n{Colors.OKCYAN}5. Run Database Migrations:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}cd src{Colors.ENDC}")
+        print(f"   {Colors.WARNING}python manage.py migrate{Colors.ENDC}")
         
-        print("\n6. Create Superuser (Optional):")
-        print("   python manage.py createsuperuser")
+        print(f"\n{Colors.OKCYAN}6. Create Superuser (Optional):{Colors.ENDC}")
+        print(f"   {Colors.WARNING}python manage.py createsuperuser{Colors.ENDC}")
         
-        print("\n7. Run Development Server:")
-        print("   python manage.py runserver")
+        print(f"\n{Colors.OKCYAN}7. Run Development Server:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}python manage.py runserver{Colors.ENDC}")
     
     def _print_unix_success_help(self) -> None:
         """This function will print next steps for Linux/macOS user after creation of new Django Project.
         """
-        print("\n🌟 Next Steps for Your Django Project:")
+        print(f"\n{Colors.OKGREEN}{Colors.BOLD}🌟 Next Steps for Your Django Project:{Colors.ENDC}")
         
-        print("\n1. Create a Virtual Environment:")
-        print(f"   cd {self.config['project_path']}")
-        print("   python3 -m venv venv")
+        print(f"\n{Colors.OKCYAN}1. Create a Virtual Environment:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}cd {self.config['project_path']}{Colors.ENDC}")
+        print(f"   {Colors.WARNING}python3 -m venv venv{Colors.ENDC}")
         
-        print("\n2. Activate the Virtual Environment:")
-        print("   source venv/bin/activate")
+        print(f"\n{Colors.OKCYAN}2. Activate the Virtual Environment:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}source venv/bin/activate{Colors.ENDC}")
         
-        print("\n3. Install Project Dependencies:")
-        print("   pip install -r ./requirements/development.txt")
+        print(f"\n{Colors.OKCYAN}3. Install Project Dependencies:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}pip install -r ./requirements/development.txt{Colors.ENDC}")
         
-        print("\n4. Configure Database:")
-        print("   Update DATABASE configuration & .env with your credentials")
+        print(f"\n{Colors.OKCYAN}4. Configure Database:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}Update DATABASE configuration & .env with your credentials{Colors.ENDC}")
         
-        print("\n5. Run Database Migrations:")
-        print("   cd src")
-        print("   python manage.py migrate")
+        print(f"\n{Colors.OKCYAN}5. Run Database Migrations:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}cd src{Colors.ENDC}")
+        print(f"   {Colors.WARNING}python manage.py migrate{Colors.ENDC}")
         
-        print("\n6. Create Superuser (Optional):")
-        print("   python manage.py createsuperuser")
+        print(f"\n{Colors.OKCYAN}6. Create Superuser (Optional):{Colors.ENDC}")
+        print(f"   {Colors.WARNING}python manage.py createsuperuser{Colors.ENDC}")
         
-        print("\n7. Run Development Server:")
-        print("   python manage.py runserver")
+        print(f"\n{Colors.OKCYAN}7. Run Development Server:{Colors.ENDC}")
+        print(f"   {Colors.WARNING}python manage.py runserver{Colors.ENDC}")
     
     def print_success_help(self) -> None:
         """This function will call success_help function according to OS type.
@@ -202,35 +225,40 @@ class DjangoProjectStructurator(BaseStructurator):
         print("=" * 40)
         
         print("")
-        confirm = super()._yes_no_prompt("Do you want to proceed with project creation?", default=True)
+        if self.kwargs and self.kwargs.get('no_que'):
+            confirm = True
+        else:
+            confirm = super()._yes_no_prompt("Do you want to proceed with project creation?", default=True)
+            
         if confirm:
+            project_structure = copy.deepcopy(PROJECT_STRUCTURE)
             
             if config.get("database") == 'sqlite':
-                PROJECT_STRUCTURE['local_db'] = []
+                project_structure['local_db'] = []
                 
-            if config.get("env") == 'no_env':
-                PROJECT_STRUCTURE['src']['config'][None].remove('.env')
-                PROJECT_STRUCTURE['src']['config'][None].remove('.env.example')
+            if config.get("use_celery"):
+                project_structure['src']['config'][None].append("celery.py")
                 
-            if config.get("use_celery", False) == True:
-                PROJECT_STRUCTURE['src']['config'][None].append("celery.py")
+            if config.get("use_logger"):
+                project_structure['logs'] = []
                 
-            if config.get("use_logger", False) == True:
-                PROJECT_STRUCTURE['logs'] = []
+            if config.get("use_docker"):
+                project_structure[None].extend(['Dockerfile', 'docker-compose.yml', '.dockerignore'])
+                project_structure['nginx'] = ['default.conf']
                 
             folder_generator = FolderGenerator(
                 self.config,
-                PROJECT_STRUCTURE,
+                project_structure,
                 PROJECT_TEMPLATE_DIR,
             )
             folder_generator.generate()
             
-            print(f"Django project '{config['project_name']}' created successfully at {config['project_path']}")
+            print(f"\n{Colors.OKGREEN}🎉 Django project '{config['project_name']}' created successfully at {config['project_path']}{Colors.ENDC}")
             self.print_success_help()
         else:
             print("Project creation cancelled.")
         
         
-def startproject():
-    project_structurator = DjangoProjectStructurator()
+def startproject(kwargs=None):
+    project_structurator = DjangoProjectStructurator(kwargs)
     project_structurator.generate_project()

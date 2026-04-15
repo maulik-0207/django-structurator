@@ -1,3 +1,55 @@
+"""
+Use `python manage.py test apps.{{ app_name }}` to run these tests.
+
+-------------------------------
+1. Model Tests
+-------------------------------
+# from .models import YourModel
+#
+# class YourModelTest(TestCase):
+#     @classmethod
+#     def setUpTestData(cls):
+#         # Set up non-modified objects used by all test methods
+#         YourModel.objects.create(name='test_object')
+#
+#     def test_model_content(self):
+#         obj = YourModel.objects.get(id=1)
+#         self.assertEqual(obj.name, 'test_object')
+
+
+-------------------------------
+2. View Tests
+-------------------------------
+# from django.urls import reverse
+#
+# class YourViewsTest(TestCase):
+#     def test_view_url_exists_at_proper_location(self):
+#         resp = self.client.get('/your-url-path/')
+#         self.assertEqual(resp.status_code, 200)
+#
+#     def test_view_uses_correct_template(self):
+#         resp = self.client.get(reverse('your_view_name'))
+#         self.assertEqual(resp.status_code, 200)
+#         self.assertTemplateUsed(resp, 'your_template.html')
+
+{% if use_api_drf %}
+-------------------------------
+3. API Tests (Django REST Framework)
+-------------------------------
+# from rest_framework.test import APITestCase
+# from rest_framework import status
+# from django.urls import reverse
+#
+# class YourAPITest(APITestCase):
+#     def test_api_endpoint(self):
+#         url = reverse('your_api_view_name')
+#         data = {'key': 'value'}
+#         response = self.client.post(url, data, format='json')
+#         
+#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+{% endif %}
+"""
 from django.test import TestCase
+{% if use_api_drf %}from rest_framework.test import APITestCase{% endif %}
 
 # Create your tests here.

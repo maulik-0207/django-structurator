@@ -2,6 +2,9 @@
 
 Welcome! This guide will walk you through setting up and running your Django project created using **django-structurator**.
 
+> [!IMPORTANT]
+> 🧠 **AI & Developer Guidelines:** Before writing any code, please review the [Architecture Guide](ARCHITECTURE.md) to understand folder boundaries, and the [AI Context File](AI_CONTEXT.md) tailored specifically for AI coding assistants (Cursor, Claude, Antigravity) to maintain code quality.
+
 ---
 
 ## 📦 1. Set Up Virtual Environment
@@ -121,6 +124,25 @@ If using Beat Scheduler:
 ```bash
 celery -A config beat -l info
 ```
+
+---
+{% endif %}
+
+{% if use_docker %}
+## 🐳 8. Docker Environment
+
+If you prefer to run the entire stack through Docker:
+```bash
+# Build and start the containers
+docker-compose up -d --build
+
+# Run migrations inside the container
+docker-compose exec web python src/manage.py migrate
+
+# Create superuser inside the container
+docker-compose exec web python src/manage.py createsuperuser
+```
+The application will be available at `http://localhost:8000`.
 
 ---
 {% endif %}

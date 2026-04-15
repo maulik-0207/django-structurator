@@ -1,0 +1,162 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - static_volume:/app/src/static
+      - media_volume:/app/src/media
+    expose:
+      - 8000
+    {% if env == 'django-environ' or env == 'python-dotenv' %}env_file:
+      - ./src/config/.env{% endif %}
+    depends_on:
+{% if database == 'postgresql' or database == 'mysql' %}      db:
+        condition: service_healthy
+{% endif %}{% if use_redis %}      redis:
+        condition: service_started
+{% else %}      # redis:
+      #   condition: service_started
+{% endif %}
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/app/src/static
+      - media_volume:/app/src/media
+    depends_on:
+      - web
+
+{% if database == 'postgresql' %}
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    {% if env == 'django-environ' or env == 'python-dotenv' %}env_file:
+      - ./src/config/.env{% endif %}
+    environment:
+      - POSTGRES_DB=${DB_NAME:-postgres}
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+{% elif database == 'mysql' %}
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    volumes:
+      - mysql_data:/var/lib/mysql
+    {% if env == 'django-environ' or env == 'python-dotenv' %}env_file:
+      - ./src/config/.env{% endif %}
+    environment:
+      - MYSQL_DATABASE=${DB_NAME:-mysql}
+      - MYSQL_USER=${DB_USER:-mysql}
+      - MYSQL_PASSWORD=${DB_PASSWORD:-mysql}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-mysql}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+{% else %}
+  # db:
+  #   image: postgres:15
+  #   restart: unless-stopped
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data/
+  #   environment:
+  #     - POSTGRES_DB=postgres
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
+{% endif %}
+
+{% if use_redis %}
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+{% else %}
+  # redis:
+  #   image: redis:7-alpine
+  #   restart: unless-stopped
+  #   volumes:
+  #     - redis_data:/data
+{% endif %}
+
+{% if use_celery %}
+  celery:
+    build: .
+    restart: unless-stopped
+    command: celery -A config worker -l INFO
+    {% if env == 'django-environ' or env == 'python-dotenv' %}env_file:
+      - ./src/config/.env{% endif %}
+    depends_on:
+      web:
+        condition: service_started
+      redis:
+        condition: service_started
+{% if database == 'postgresql' or database == 'mysql' %}      db:
+        condition: service_healthy{% endif %}
+{% else %}
+  # celery:
+  #   # May be useful in the future if you need background tasks!
+  #   build: .
+  #   restart: unless-stopped
+  #   command: celery -A config worker -l INFO
+  #   env_file:
+  #     - ./src/config/.env
+  #   depends_on:
+  #     web:
+  #       condition: service_started
+  #     redis:
+  #       condition: service_started
+{% endif %}
+
+{% if use_celery %}
+  celery-beat:
+    build: .
+    restart: unless-stopped
+    command: celery -A config beat -l INFO
+    {% if env == 'django-environ' or env == 'python-dotenv' %}env_file:
+      - ./src/config/.env{% endif %}
+    depends_on:
+      web:
+        condition: service_started
+      redis:
+        condition: service_started
+{% if database == 'postgresql' or database == 'mysql' %}      db:
+        condition: service_healthy{% endif %}
+{% else %}
+  # celery-beat:
+  #   build: .
+  #   restart: unless-stopped
+  #   command: celery -A config beat -l INFO
+  #   env_file:
+  #     - ./src/config/.env
+  #   depends_on:
+  #     web:
+  #       condition: service_started
+  #     redis:
+  #       condition: service_started
+{% endif %}
+
+volumes:
+  static_volume:
+  media_volume:
+{% if database == 'postgresql' %}  postgres_data:{% elif database == 'mysql' %}  mysql_data:{% endif %}
+{% if use_redis %}  redis_data:{% endif %}

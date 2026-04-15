@@ -1,6 +1,10 @@
+"""
+Django-structurator global configuration mapping module.
+
+Defines the default path logic, feature mappings for the interactive prompts,
+and validator constraints.
+"""
 from pathlib import Path
-
-
 # Useful paths
 BASE_DIR = Path(__file__).resolve().parent
 TEMPLATES_DIR = BASE_DIR / "templates"
@@ -13,7 +17,7 @@ PROJECT_NAME_PATTERN = r'^[a-zA-Z][a-zA-Z0-9_]*$'
 INVALID_PROJECT_NAME_MESSAGE = "It must start with a letter, and contain only letters, numbers, and underscores."
 DISALLOWED_PROJECT_NAMES = []
 
-ENV_CHOICES = ('django-environ', 'python-dotenv', 'no_env')
+ENV_CHOICES = ('django-environ', 'python-dotenv')
 DEFAULT_ENV = 'django-environ'
 
 DATABASE_CHOICES = ('postgresql', 'mysql', 'sqlite')
@@ -21,15 +25,13 @@ DEFAULT_DATABASE = 'sqlite'
 
 DJANGO_PROJECT_FEATURES = {
     # feature_name : feature_key
-    'Django Debug Toolbar': 'use_debug_toolbar',
-    'Advanced Password Hashers (argon2, bcrypt)': 'use_password_hashers',
     'SMTP Email': 'use_smtp_email',
     'Celery for background tasks': 'use_celery',
     'Redis cache/message broker': 'use_redis',
     'Django Rest Framework (DRF)': 'use_drf',
-    'Django Cors Headers': 'use_cors',
     'Django Jazzmin for Admin Panel skins': 'use_jazzmin',
-    'Custom Logger Configurations': 'use_logger'
+    'Custom Logger Configurations': 'use_logger',
+    'Docker Setup (Dockerfile & docker-compose)': 'use_docker'
 }
 
 
@@ -40,10 +42,9 @@ DISALLOWED_APP_NAMES = []
 
 DJANGO_APP_FEATURES = {
     # feature_name : feature_key
-    'validators.py': 'use_validators_py',
-    'forms.py': 'use_forms_py',
-    'signals.py': 'use_signals_py',
-    'tasks.py for Celery tasks' : 'use_tasks_py',
+    'forms.py': 'use_forms',
+    'signals.py': 'use_signals',
+    'tasks.py for Celery tasks' : 'use_tasks',
     'App level static and template folder' : 'use_app_static_template',
     'template tags/filters' : 'use_template_tags',
     'API using DRF' : 'use_api_drf',
